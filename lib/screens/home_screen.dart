@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/screens/login_screen.dart';
 import 'package:project_1/screens/signup_screen.dart';
-import 'package:project_1/constants.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -39,6 +39,7 @@ class HomeScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 20,
+                        fontFamily: 'Ubuntu'
                       ),
                     ),  
                   SizedBox(height: 30),
@@ -58,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Ubuntu',
                         fontWeight: FontWeight.bold
                       ),
                     ),
@@ -83,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20,
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Ubuntu',
                         fontWeight: FontWeight.bold
                       ),
                     ),
@@ -91,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 25),
             const Text(
               'Sign up Using',
               textAlign: TextAlign.center,
@@ -112,15 +113,16 @@ class HomeScreen extends StatelessWidget {
                     child: Image.asset('assets/images/icons/facebook.png'),
                   ),
                 ),
+                SizedBox(width: 15),
                 IconButton(
                   onPressed: () {},
                   icon: CircleAvatar(
                     radius: 25,
                     backgroundColor: Colors.transparent,
-                    child:
-                        Image.asset('assets/images/icons/google.png'),
+                    child: Image.asset('assets/images/icons/google.png'),
                   ),
                 ),
+                SizedBox(width: 15),
                 IconButton(
                   onPressed: () {},
                   icon: CircleAvatar(
