@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_1/screens/login_screen.dart';
 import 'package:project_1/screens/signup_screen.dart';
@@ -16,7 +15,7 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children:[
             Padding(
-              padding: const EdgeInsets.fromLTRB(25, 33, 25 ,20),
+              padding: const EdgeInsets.fromLTRB(25, 75, 25 ,20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

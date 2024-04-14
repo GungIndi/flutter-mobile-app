@@ -9,16 +9,52 @@ Color secondaryButtonColor = Color(0x218bf5);
 Color secondaryButtonTextColor = Color(0xffe6e1ff);
 Color InputField = Color(0xfff1f1f5);
 
-TextStyle primaryButtonTextStyle = TextStyle(
-  color: primaryButtonTextColor,
-  fontSize: 20,
-  fontFamily: 'Ubuntu',
-  fontWeight: FontWeight.bold
-);
+class Job {
+  final String title;
+  final String company;
+  final String location;
 
-TextStyle secondaryButtonTextStyle = TextStyle(
-  color: secondaryButtonTextColor,
-  fontSize: 20,
-  fontFamily: 'Ubuntu',
-  fontWeight: FontWeight.bold
-);
+
+  Job({
+    required this.title,
+    required this.company,
+    required this.location,
+  });
+}
+
+List<String> titles = [
+  'Software Engineer',
+  'Data Analyst',
+  'Network Administrator',
+  'IT Support Specialist',
+  'UI/UX Designer',
+  'Database Administrator',
+  'Cybersecurity Analyst',
+  'Cloud Engineer',
+  'Mobile App Developer',
+  'Web Developer',
+];
+List<String> companies = [
+  'Gojek',
+  'Tokopedia',
+  'Traveloka',
+  'Bukalapak',
+  'Shopee',
+  'Grab',
+  'Lazada',
+  'OVO',
+  'Pegipegi',
+  'Zalora',
+];
+List<String> locations = [
+  'Jakarta',
+  'Bandung',
+  'Surabaya',
+  'Semarang',
+  'Medan',
+  'Yogyakarta',
+  'Palembang',
+  'Makassar',
+  'Malang',
+  'Denpasar',
+];
