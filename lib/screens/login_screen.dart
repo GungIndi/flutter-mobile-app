@@ -11,20 +11,19 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(25, 20, 25 ,0),
+          padding: const EdgeInsets.fromLTRB(25, 33, 25 ,20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,  
             children: [
-              // Image.asset("assets/images/login.jpg"),
               Row(
                 children: [
                   Text(
                     'Login to\nYour Account',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
                       fontSize: 35,
                     ),
@@ -61,10 +60,6 @@ class LoginScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color : InputField,
-                        // border : Border.all(
-                        //   color: Colors.blue,
-                        //   width: 1
-                        // )
                       ),                         
                       child: TextFormField(
                         decoration: InputDecoration(
@@ -91,7 +86,6 @@ class LoginScreen extends StatelessWidget {
                     child: Text(
                       'Forgot Password ?',
                       style: TextStyle(
-                        fontFamily: 'Ubuntu',
                         fontWeight: FontWeight.w500
                       ),),
                   ),       
@@ -105,10 +99,7 @@ class LoginScreen extends StatelessWidget {
                     onChanged: (value) {
                     },
                   ),
-                  Text(
-                    'Remember me',
-                    style: TextStyle(fontSize: 16,),
-                  ),
+                  Text('Remember me', style: TextStyle(fontSize: 16,)),
                 ],
               ),
               SizedBox(height: 50),
@@ -132,7 +123,6 @@ class LoginScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18, 
                     color: Colors.white,
-                    fontFamily: 'Ubuntu'
                   ),
                 ),
               ),
@@ -150,7 +140,6 @@ class LoginScreen extends StatelessWidget {
                     child: Text(
                       'Log In With',
                       style: TextStyle(
-                        fontFamily: 'Ubuntu',
                         fontSize: 18,
                         color: Colors.grey,
                       ),
@@ -158,14 +147,14 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 13),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
                     onPressed: () {},
                     icon: CircleAvatar(
-                      radius: 25,
+                      radius: 22,
                       child: Image.asset('assets/images/icons/facebook.png'),
                     ),
                   ),
@@ -173,7 +162,7 @@ class LoginScreen extends StatelessWidget {
                   IconButton(
                     onPressed: () {},
                     icon: CircleAvatar(
-                      radius: 25,
+                      radius: 22,
                       backgroundColor: Colors.transparent,
                       child: Image.asset('assets/images/icons/google.png'),
                     ),
@@ -182,35 +171,36 @@ class LoginScreen extends StatelessWidget {
                   IconButton(
                     onPressed: () {},
                     icon: CircleAvatar(
-                      radius: 25,
+                      radius: 22,
                       child: Image.asset('assets/images/icons/linkedin.png'),
                     ),
                   ),
                 ]
               ),
-              SizedBox(height: 65),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account? ",
-                    style: TextStyle(
-                      color: Colors.grey ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUpScreen()));
-                    },
-                    child: Text(
-                      'Register',
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an account? ",
                       style: TextStyle(
-                      color: const Color.fromARGB(255, 14, 124, 215) ),
-                    )
-                  ),
-                ],
+                        color: Colors.grey ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen()));
+                      },
+                      child: Text(
+                        'Register',
+                        style: TextStyle(
+                        color: const Color.fromARGB(255, 14, 124, 215) ),
+                      )
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_1/constants.dart';
 import 'package:project_1/screens/login_screen.dart';
@@ -10,10 +11,11 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(25, 20, 25 ,0),
+          padding: const EdgeInsets.fromLTRB(25, 33, 25 ,20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,  
             children: [
@@ -23,7 +25,6 @@ class SignUpScreen extends StatelessWidget {
                   Text(
                     'Register\nNew Account',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
                       fontSize: 35,
                     ),
@@ -122,7 +123,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 35),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -143,11 +144,10 @@ class SignUpScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18, 
                     color: Colors.white,
-                    fontFamily: 'Ubuntu'
                   ),
                 ),
               ),
-              SizedBox(height: 25),
+              SizedBox(height: 10),
               Column(
                 children: [
                   Center(
@@ -156,12 +156,11 @@ class SignUpScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 20, color: Colors.grey),
                     ),
                   ),
-                  SizedBox(height: 25),
+                  SizedBox(height: 10),
                   Center(
                     child: Text(
                       'Register With',
                       style: TextStyle(
-                        fontFamily: 'Ubuntu',
                         fontSize: 18,
                         color: Colors.grey,
                       ),
@@ -176,7 +175,7 @@ class SignUpScreen extends StatelessWidget {
                   IconButton(
                     onPressed: () {},
                     icon: CircleAvatar(
-                      radius: 25,
+                      radius: 22,
                       child: Image.asset('assets/images/icons/facebook.png'),
                     ),
                   ),
@@ -184,7 +183,7 @@ class SignUpScreen extends StatelessWidget {
                   IconButton(
                     onPressed: () {},
                     icon: CircleAvatar(
-                      radius: 25,
+                      radius: 22,
                       backgroundColor: Colors.transparent,
                       child: Image.asset('assets/images/icons/google.png'),
                     ),
@@ -193,35 +192,37 @@ class SignUpScreen extends StatelessWidget {
                   IconButton(
                     onPressed: () {},
                     icon: CircleAvatar(
-                      radius: 25,
+                      radius: 22,
                       child: Image.asset('assets/images/icons/linkedin.png'),
                     ),
                   ),
                 ]
               ),
-              SizedBox(height: 45),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account? ",
-                    style: TextStyle(
-                      color: Colors.grey ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
-                    },
-                    child: Text(
-                      'Log In',
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have an account? ",
                       style: TextStyle(
-                      color: Colors.blue),
-                    )
-                  ),
-                ],
+                        color: Colors.grey ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                      },
+                      child: Text(
+                        'Log In',
+                        style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.w500),
+                      )
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

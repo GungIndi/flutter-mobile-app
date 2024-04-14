@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/screens/home_screen.dart';
-import 'package:project_1/screens/login_screen.dart';
-import 'package:project_1/screens/signup_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,18 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CanBeAnyApp',
+      title: 'Flutter App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // fontFamily: 'Montserrat',
+        fontFamily: 'Ubuntu',
         useMaterial3: true,
       ),
-      initialRoute: HomeScreen.id,
-      routes: {
-        HomeScreen.id: (context) => HomeScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        SignUpScreen.id: (context) => SignUpScreen(),
-        // WelcomeScreen.id: (context) => WelcomeScreen(),
-      },
+      home: HomeScreen(),
     );
   }
 }

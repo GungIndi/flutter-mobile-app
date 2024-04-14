@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_1/screens/login_screen.dart';
 import 'package:project_1/screens/signup_screen.dart';
@@ -13,124 +14,97 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children:[
             Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Image.asset("assets/images/welcome1.jpg"),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.fromLTRB(25, 33, 25 ,20),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Image.asset("assets/images/welcome.jpg"),
+                  ),
+                  SizedBox(height: 60),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Hello!',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 50,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 15),
                   Text(
-                  'Welcome!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                    fontFamily: 'Ubuntu',
+                    'Welcome to My App, where you just confused what kind of app is this',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 20,
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  const Text(
-                      'Welcome to My App, where you just confused what kind of app is this',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 20,
-                        fontFamily: 'Ubuntu'
-                      ),
-                    ),  
+                  ),  
                   SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LoginScreen()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromRGBO(33, 150, 243, 1),  
-                      padding: EdgeInsets.fromLTRB(130, 15, 130, 15)
-                    ),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'Ubuntu',
-                        fontWeight: FontWeight.bold
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.0),
+                          ),
+                          minimumSize: Size(double.infinity, 56),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()));
+                        },
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            fontSize: 18, 
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SignUpScreen()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,  
-                      padding: EdgeInsets.fromLTRB(120, 15, 120, 15),
-                      side: BorderSide(color: Colors.blue)
-                    ),
-                    child: const Text(
-                      "Sign Up",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 20,
-                        fontFamily: 'Ubuntu',
-                        fontWeight: FontWeight.bold
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen()));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,  
+                          side: BorderSide(color: Colors.blue),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.0),
+                          ),
+                          minimumSize: Size(double.infinity, 56)
+                        ),
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            fontSize: 18, 
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w600
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: 25),
-            const Text(
-              'Sign up Using',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Ubuntu',
-                fontSize: 16,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: CircleAvatar(
-                    radius: 25,
-                    child: Image.asset('assets/images/icons/facebook.png'),
-                  ),
-                ),
-                SizedBox(width: 15),
-                IconButton(
-                  onPressed: () {},
-                  icon: CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Colors.transparent,
-                    child: Image.asset('assets/images/icons/google.png'),
-                  ),
-                ),
-                SizedBox(width: 15),
-                IconButton(
-                  onPressed: () {},
-                  icon: CircleAvatar(
-                    radius: 25,
-                    child: Image.asset('assets/images/icons/linkedin.png'),
-                  ),
-                ),
-              ]
             ),
           ]
         ),
