@@ -5,8 +5,11 @@ import 'package:project_1/screens/login_screen.dart';
 import 'package:project_1/screens/welcome_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+  SignUpScreen({super.key});
   static String id = 'signup_screen';
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,6 @@ class SignUpScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,  
               children: [
-                // Image.asset("assets/images/login.jpg"),
                 Row(
                   children: [
                     Text(
@@ -41,85 +43,33 @@ class SignUpScreen extends StatelessWidget {
                 Form(
                   child: Column(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color : inputField,
-                        ),                      
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'Username',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                          )
-                        ),
+                      InputField(
+                        hintText: 'Username', 
+                        controller: usernameController,
                       ),
                       SizedBox(height: 32),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color : inputField,
-                        ),                      
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                          )
-                        ),
+                      InputField(
+                        hintText: 'Email',
+                        controller: emailController,
+                        obscureText: false,
                       ),
-                      SizedBox(height: 32),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color : inputField,
-                          // border : Border.all(
-                          //   color: Colors.blue,
-                          //   width: 1
-                          // )
-                        ),                         
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'Password',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.visibility_outlined),
-                              onPressed: () {},
-                            )
-                          )
-                        ),
-                      )
+                      SizedBox(height: 32,),
+                      InputField(
+                        hintText: 'Password',
+                        controller: passwordController,
+                        obscureText: true,
+                        suffixIcon: true,
+                      ),
                     ],
                   ) 
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 20),
                 Row(
                   children: [
-                    Checkbox(
-                      value: true,
-                      onChanged: (value) {
-                      },
-                    ),
-                    Text(
-                      'Agree to our ',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey
-                      ),
-                    ),
-                    Text(
-                      'Terms & Condition',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue
-                      ),
+                    CustomCheckbox(
+                      inactiveColor: Colors.white,
+                      activeColor: Colors.blue,
+                      text: 'Agree to our Terms & Condition',
                     ),
                   ],
                 ),

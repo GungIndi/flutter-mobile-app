@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/components/components.dart';
-import 'package:project_1/constants.dart';
 import 'package:project_1/screens/signup_screen.dart';
 import 'package:project_1/screens/welcome_screen.dart';
 
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
   static String id = 'login_screen';
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,41 +42,18 @@ class LoginScreen extends StatelessWidget {
                 Form(
                   child: Column(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color : inputField,
-                        ),                      
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'Email',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                          )
-                        ),
+                      InputField(
+                        hintText: 'Email',
+                        controller: emailController,
+                        obscureText: false,
                       ),
                       SizedBox(height: 32,),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color : inputField,
-                        ),                         
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'Password',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.visibility_outlined),
-                              onPressed: () {},
-                            )
-                          )
-                        ),
-                      )
+                      InputField(
+                        hintText: 'Password',
+                        controller: passwordController,
+                        obscureText: true,
+                        suffixIcon: true,
+                      ),
                     ],
                   ) 
                 ),
@@ -93,15 +71,10 @@ class LoginScreen extends StatelessWidget {
                   ],           
                 ),
                 SizedBox(height: 5),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: true,
-                      onChanged: (value) {
-                      },
-                    ),
-                    Text('Remember me', style: TextStyle(fontSize: 16,)),
-                  ],
+                CustomCheckbox(
+                  inactiveColor: Colors.white,
+                  activeColor: Colors.blue,
+                  text: 'Remember me',
                 ),
                 SizedBox(height: 50),
                 CustomButton(
@@ -166,6 +139,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ]
                 ),
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
