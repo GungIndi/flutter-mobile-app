@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:project_1/constants.dart';
 import 'dart:math';
 
-import 'package:project_1/screens/signup_screen.dart';
-
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key});
   static String id = 'welcome_screen';

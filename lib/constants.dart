@@ -7,7 +7,7 @@ Color primaryButtonColor = Color(0x218bf5);
 Color primaryButtonTextColor = Color(0xffe6e1ff);
 Color secondaryButtonColor = Color(0x218bf5);
 Color secondaryButtonTextColor = Color(0xffe6e1ff);
-Color InputField = Color(0xfff1f1f5);
+Color inputField = Color(0xfff1f1f5);
 
 class Job {
   final String title;
