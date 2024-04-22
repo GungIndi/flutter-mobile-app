@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/screens/home_screen.dart';
+import 'package:project_1/screens/login_screen.dart';
+import 'package:project_1/screens/signup_screen.dart';
+import 'package:project_1/screens/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +19,13 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Ubuntu',
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/login': (context) => LoginScreen(),
+        '/register': (context) => SignUpScreen(),
+        '/dashboard': (context) => WelcomeScreen(),
+      },
+      initialRoute: '/',
     );
   }
 }

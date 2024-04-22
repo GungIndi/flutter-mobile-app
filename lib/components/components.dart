@@ -166,3 +166,42 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
     );
   }
 }    
+
+class SocialMediaIcon extends StatelessWidget {
+  const SocialMediaIcon({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          onPressed: () {},
+          icon: CircleAvatar(
+            radius: 22,
+            child: Image.asset('assets/images/icons/facebook.png'),
+          ),
+        ),
+        SizedBox(width: 12),
+        IconButton(
+          onPressed: () {},
+          icon: CircleAvatar(
+            radius: 22,
+            backgroundColor: Colors.transparent,
+            child: Image.asset('assets/images/icons/google.png'),
+          ),
+        ),
+        SizedBox(width: 12),
+        IconButton(
+          onPressed: () {},
+          icon: CircleAvatar(
+            radius: 22,
+            child: Image.asset('assets/images/icons/linkedin.png'),
+          ),
+        ),
+      ]
+    );
+  }
+}

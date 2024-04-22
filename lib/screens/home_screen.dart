@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_1/screens/login_screen.dart';
-import 'package:project_1/screens/signup_screen.dart';
 import 'package:project_1/components/components.dart';
 
 
@@ -56,10 +54,9 @@ class HomeScreen extends StatelessWidget {
                           backgroundColor: Colors.blue, 
                           textColor: Colors.white, 
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacementNamed(
                               context,
-                              MaterialPageRoute(builder: (context) => LoginScreen())
-                            );
+                              '/login');
                           }
                         ),
                         const SizedBox(
@@ -71,10 +68,9 @@ class HomeScreen extends StatelessWidget {
                           textColor: Colors.blue, 
                           borderColor: Colors.blue,
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacementNamed(
                               context,
-                              MaterialPageRoute(builder: (context) => SignUpScreen())
-                            );
+                              '/register');
                           }
                         ),
                       ],

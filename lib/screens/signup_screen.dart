@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/components/components.dart';
-import 'package:project_1/constants.dart';
-import 'package:project_1/screens/login_screen.dart';
-import 'package:project_1/screens/welcome_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -79,10 +76,9 @@ class SignUpScreen extends StatelessWidget {
                   backgroundColor: Colors.blue, 
                   textColor: Colors.white, 
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacementNamed(
                       context,
-                      MaterialPageRoute(builder: (context) => WelcomeScreen())
-                    );
+                      '/dashboard');
                   }
                 ), 
                 SizedBox(height: 10),
@@ -107,35 +103,7 @@ class SignUpScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: CircleAvatar(
-                        radius: 22,
-                        child: Image.asset('assets/images/icons/facebook.png'),
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    IconButton(
-                      onPressed: () {},
-                      icon: CircleAvatar(
-                        radius: 22,
-                        backgroundColor: Colors.transparent,
-                        child: Image.asset('assets/images/icons/google.png'),
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    IconButton(
-                      onPressed: () {},
-                      icon: CircleAvatar(
-                        radius: 22,
-                        child: Image.asset('assets/images/icons/linkedin.png'),
-                      ),
-                    ),
-                  ]
-                ),
+                SocialMediaIcon(),
                 SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -147,10 +115,10 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacementNamed(
                             context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                            '/login'
+                        );
                       },
                       child: Text(
                         'Log In',
@@ -169,3 +137,5 @@ class SignUpScreen extends StatelessWidget {
     );
   } 
 }
+
+

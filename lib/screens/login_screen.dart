@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/components/components.dart';
-import 'package:project_1/screens/signup_screen.dart';
-import 'package:project_1/screens/welcome_screen.dart';
+
 
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  static String id = 'login_screen';
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -82,10 +80,7 @@ class LoginScreen extends StatelessWidget {
                   backgroundColor: Colors.blue, 
                   textColor: Colors.white, 
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => WelcomeScreen())
-                    );
+                    Navigator.pushReplacementNamed(context, '/dashboard');
                   }
                 ),
                 SizedBox(height: 25),
@@ -110,35 +105,7 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 13),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: CircleAvatar(
-                        radius: 22,
-                        child: Image.asset('assets/images/icons/facebook.png'),
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    IconButton(
-                      onPressed: () {},
-                      icon: CircleAvatar(
-                        radius: 22,
-                        backgroundColor: Colors.transparent,
-                        child: Image.asset('assets/images/icons/google.png'),
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    IconButton(
-                      onPressed: () {},
-                      icon: CircleAvatar(
-                        radius: 22,
-                        child: Image.asset('assets/images/icons/linkedin.png'),
-                      ),
-                    ),
-                  ]
-                ),
+                SocialMediaIcon(),
                 SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -150,10 +117,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpScreen()));
+                        Navigator.pushReplacementNamed(context, '/register');
                       },
                       child: Text(
                         'Register',
