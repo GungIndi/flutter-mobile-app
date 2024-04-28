@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
 
 
@@ -80,7 +82,7 @@ class LoginScreen extends StatelessWidget {
                   backgroundColor: Colors.blue, 
                   textColor: Colors.white, 
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/dashboard');
+                    login(emailController, passwordController, context);
                   }
                 ),
                 SizedBox(height: 25),
@@ -134,4 +136,28 @@ class LoginScreen extends StatelessWidget {
       )
     );
   } 
+}
+
+void login(emailController, passwordController, context) async {
+  final dio = Dio();
+  final apiUrl = 'https://mobileapis.manpits.xyz/api';
+  final storage = GetStorage();
+  try{
+    final response = await dio.post("$apiUrl/login", data: {
+      "email": emailController.text,
+      "password": passwordController.text
+    });
+
+    print (response.data);
+    storage.write('token', response.data['data']['token']);
+
+    if (response.data['success'] == true) {
+      Navigator.pushNamed(
+        context,
+        '/dashboard'
+      );
+    }
+  } on DioException catch (e) {
+    print(" Error ${e.response?.statusCode} - ${e.response?.data} ");
+  }
 }
