@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:project_1/constants.dart';
 
 class CustomButton extends StatelessWidget {
@@ -202,6 +203,123 @@ class SocialMediaIcon extends StatelessWidget {
           ),
         ),
       ]
+    );
+  }
+}
+
+class DisplayImage extends StatelessWidget {
+  final String imagePath;
+  final VoidCallback onPressed;
+
+  const DisplayImage({
+    Key? key,
+    required this.imagePath,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          CircleAvatar(
+            radius: 100,
+            backgroundImage: NetworkImage(imagePath),
+          ),
+          Positioned(
+            child: 
+              Container(
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.blue,
+                ),
+              ),
+          )
+        ]
+      )
+    );
+  }
+}
+
+class UserProfileData extends StatelessWidget {
+  final String title;
+  final String value;
+  final VoidCallback onPressed;
+
+  const UserProfileData({
+    Key? key,
+    required this.title,
+    required this.value,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context){
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey,
+            ),
+          ),
+          SizedBox(
+            height: 1,
+          ),
+          Container(
+            width: 350,
+            height: 40,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.grey,
+                  width: 1,
+                )
+              )
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: null,
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 16, 
+                      height: 1.4,
+                      color: Colors.black
+                    ),
+                  )
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacementNamed(
+                        context,
+                        '/login'
+                    );
+                  },
+                  child: Icon(
+                    Icons.keyboard_arrow_right,
+                    color: Colors.grey,
+                    size: 40.0,
+                  ),
+                )
+              ]
+            )
+          )
+        ],
+      )
     );
   }
 }

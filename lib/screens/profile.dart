@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:project_1/components/components.dart';
 
 class ProfilScreen extends StatefulWidget {
   ProfilScreen({Key? key}) : super(key: key);
@@ -47,53 +48,61 @@ class _ProfilScreenState extends State{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Profile', style: TextStyle(fontSize: 20)),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
+        toolbarHeight: 50,
+        // automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: user == null
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: user == null
             ? CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
               )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            : Padding(
+              padding: const EdgeInsets.fromLTRB(25, 33, 25 ,20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.only(bottom: 20),
                     child: Text(
-                      'Name: ${user!['name']}',
-                      style: TextStyle(fontSize: 20),
+                      'Edit Profile',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.blue,
                     ),
+                    )
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Email: ${user!['email']}',
-                      style: TextStyle(fontSize: 20),
-                    ),
+                  DisplayImage(
+                    imagePath: "assets/images/profile.jpeg", 
+                    onPressed: () {},
                   ),
                   SizedBox(height: 20),
-                  ElevatedButton(
+                  UserProfileData(
+                    title: 'Name', 
+                    value: user!['name'], 
+                    onPressed: (){},
+                  ),
+                  UserProfileData(
+                    title: 'Email', 
+                    value: user!['email'], 
+                    onPressed: (){},
+                  ),
+                  SizedBox(height: 70),
+                  CustomButton(
+                    text: 'Log Out', 
+                    backgroundColor: Colors.red, 
+                    textColor: Colors.white, 
                     onPressed: () {
                       logout(context);
                     },
-                    child: Text(
-                      'Logout',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
                   ),
                 ],
               ),
+            ),
+        ),
       ),
     );
   }
