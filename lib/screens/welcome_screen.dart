@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:project_1/constants.dart';
 import 'dart:math';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key});
+  WelcomeScreen({Key? key});
   static String id = 'welcome_screen';
-
+  final storage = GetStorage();
   List<Job> generateRandomJob(int length) {
     List<Job> jobs = [];
     Random random = Random();
@@ -71,7 +72,7 @@ class WelcomeScreen extends StatelessWidget {
                               ],
                             ),
                             trailing: GestureDetector(
-                              onTap: () {},
+                              onTap: () {print('TOKEN = ${storage.read('token')}');},
                               child: Icon(
                                 Icons.keyboard_arrow_right_outlined
                               ),

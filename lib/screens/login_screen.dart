@@ -154,7 +154,7 @@ void login(emailController, passwordController, context) async {
     if (response.data['success'] == true) {
       Navigator.pushNamed(
         context,
-        '/dashboard'
+        '/profile'
       );
     }
   } on DioException catch (e) {

@@ -1,4 +1,7 @@
+import 'package:dio/dio.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -76,9 +79,7 @@ class SignUpScreen extends StatelessWidget {
                   backgroundColor: Colors.blue, 
                   textColor: Colors.white, 
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
-                      context,
-                      '/dashboard');
+                    SignUp(usernameController, emailController, passwordController, context);
                   }
                 ), 
                 SizedBox(height: 10),
@@ -136,6 +137,29 @@ class SignUpScreen extends StatelessWidget {
       )
     );
   } 
+}
+
+void SignUp(usernameController, emailController, passwordController, context) async {
+  final dio = Dio();
+  final apiUrl = 'https://mobileapis.manpits.xyz/api';
+
+  try{
+    final response = await dio.post("$apiUrl/register", data: {
+      "name" : usernameController.text,
+      "email": emailController.text,
+      "password": passwordController.text
+    });
+    print (response.data);
+  
+    if (response.data['success'] == true) {
+      Navigator.pushNamed(
+        context,
+        '/login'
+      );
+    }
+  } on DioException catch (e) {
+    print(" Error ${e.response?.statusCode} - ${e.response?.data} ");
+  }
 }
 
 
