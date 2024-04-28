@@ -143,10 +143,13 @@ void login(emailController, passwordController, context) async {
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final storage = GetStorage();
   try{
-    final response = await dio.post("$apiUrl/login", data: {
-      "email": emailController.text,
-      "password": passwordController.text
-    });
+    final response = await dio.post(
+      "$apiUrl/login", 
+      data: {
+        "email": emailController.text,
+        "password": passwordController.text
+      }
+    );
 
     print (response.data);
     storage.write('token', response.data['data']['token']);

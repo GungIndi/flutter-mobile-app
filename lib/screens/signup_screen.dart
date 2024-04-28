@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
 
 class SignUpScreen extends StatelessWidget {
