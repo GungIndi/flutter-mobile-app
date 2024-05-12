@@ -25,7 +25,7 @@ class _ProfileScreenState extends State{
       ),
     );
     print('Response: $response');
-    
+
     if (response.data['success'] == true) {
       Map<String, dynamic> data = response.data;
       user = data['data']['user'];
@@ -47,9 +47,16 @@ class _ProfileScreenState extends State{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+        ),
+        toolbarHeight: 75,
+        centerTitle: true,
         backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
-        toolbarHeight: 30,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: user == null
@@ -67,14 +74,6 @@ class _ProfileScreenState extends State{
                   children: [
                     Padding(
                       padding: EdgeInsets.only(bottom: 20),
-                      child: Text(
-                        'Edit Profile',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.blue,
-                      ),
-                      )
                     ),
                     DisplayImage(
                       imagePath: "assets/images/profile.jpeg", 

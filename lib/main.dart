@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/provider/bottomNavigationBarProvider.dart';
+import 'package:project_1/screens/addMember.dart';
+import 'package:project_1/screens/editMember.dart';
 import 'package:project_1/screens/home_screen.dart';
 import 'package:project_1/screens/login_screen.dart';
 import 'package:project_1/screens/profile.dart';
-import 'package:project_1/screens/provider.dart';
+import 'package:project_1/provider/provider.dart';
 import 'package:project_1/screens/signup_screen.dart';
 import 'package:project_1/screens/dashboard_screen.dart';
 import 'package:get_storage/get_storage.dart';
@@ -33,7 +35,8 @@ class MyApp extends StatelessWidget {
           '/register': (context) => SignUpScreen(),
           '/dashboard': (context) => DashboardScreen(),
           '/profile': (context) => ProfileScreen(),
-          '/buttom': (context) => ButtomNavigationProviderScreen()
+          '/buttom': (context) => ButtomNavigationProviderScreen(),
+          '/addMember': (context) => AddMemberScreen(),
         },
         initialRoute: '/',
       ),

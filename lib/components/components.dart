@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:project_1/constants.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -228,6 +225,68 @@ class Anggota {
       telepon: json['telepon'],
       imageUrl: json['image_url'] ?? '', // Handle null imageUrl
       statusAktif: json['status_aktif'],
+    );
+  }
+}
+
+
+
+class ShowDialog{
+  final String text;
+  final VoidCallback onPressedYes;
+  final VoidCallback onPressedNo;
+
+  const ShowDialog({
+    required this.text,
+    required this.onPressedYes,
+    required this.onPressedNo
+  });
+
+  Future<String?> build(BuildContext context){
+    return showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: const Text('AlertDialog description'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+  }
+
+}
+class CustomDialog {
+  Future<String?> showAlertDialog(
+    BuildContext context, {
+    required String title,
+    required String content,
+    required String cancelText,
+    required String okText,
+  }) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, cancelText),
+            child: Text(cancelText),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, okText),
+            child: Text(okText),
+          ),
+        ],
+      ),
     );
   }
 }

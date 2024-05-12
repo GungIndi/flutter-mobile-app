@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
+import 'package:project_1/screens/editMember.dart';
 
 
 class DashboardScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _DashboardScreenState extends State{
   final dio = Dio();
   final storage = GetStorage();
   List<Anggota>? anggotaList; 
-  
+
   Future<void> fetchData() async {
     try {
       Response response = await Dio().get(
@@ -35,6 +36,29 @@ class _DashboardScreenState extends State{
       print('Error occurred: $error');
     }
   }
+ 
+  void deleteAnggota(context, id) async {
+  final dio = Dio();
+  final apiUrl = 'https://mobileapis.manpits.xyz/api';
+  final storage = GetStorage();
+
+  try{
+    final response = await dio.delete(
+      "$apiUrl/anggota/$id",
+      options: Options(
+        headers: {'Authorization' : 'Bearer ${storage.read('token')}'}
+      )
+    );
+    setState(() {});
+    print(response.data);
+    if (response.data['success'] == true) {
+      Navigator.pushReplacementNamed(context, '/buttom');
+    }
+  } on DioException catch (e){
+    print(e.message);
+  }
+  
+}
 
   @override
   void initState() {
@@ -51,6 +75,7 @@ class _DashboardScreenState extends State{
           'List Anggota',
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
         ),
+        toolbarHeight: 75,
         centerTitle: true,
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
@@ -91,13 +116,34 @@ class _DashboardScreenState extends State{
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.pushReplacementNamed(context, '/register');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditMemberScreen(id: anggotaList![index].id),
+                                      ),
+                                    );
                                   },
                                   child: Icon(Icons.edit)
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.pushReplacementNamed(context, '/register');
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) => AlertDialog(
+                                        title: const Text('Are you sure?'),
+                                        content: const Text('you cannot restore this member'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(context, 'No'),
+                                            child: const Text('No'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => deleteAnggota(context, anggotaList![index].id),
+                                            child: const Text('Yes'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   },
                                   child: Icon(Icons.delete)
                                 ),
@@ -119,7 +165,10 @@ class _DashboardScreenState extends State{
         padding: const EdgeInsets.fromLTRB(0, 0, 17.0, 17.0),
         child: FloatingActionButton(
           onPressed: () {
-            // Navigate to the screen to add a new item
+            Navigator.pushNamed(
+              context,
+              '/addMember'
+            );
           },
           child: Icon(Icons.add),
           backgroundColor: Colors.white,
@@ -127,5 +176,29 @@ class _DashboardScreenState extends State{
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
+  }
+}
+
+void logout(context) async {
+  final dio = Dio();
+  final apiUrl = 'https://mobileapis.manpits.xyz/api';
+  final storage = GetStorage();
+  try{
+    final response = await dio.get(
+      "$apiUrl/logout", 
+      options : Options(
+        headers: {'Authorization' : 'Bearer ${storage.read('token')}'})
+    );
+    print(response.data);
+    storage.remove('token');
+
+    if (response.data['success'] == true) {
+      Navigator.pushNamed(
+        context,
+        '/login'
+      );
+    }
+  } on DioException catch (e){
+    print(e.message);
   }
 }
