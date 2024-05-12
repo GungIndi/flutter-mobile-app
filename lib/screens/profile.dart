@@ -50,7 +50,7 @@ class _ProfilScreenState extends State{
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        toolbarHeight: 50,
+        toolbarHeight: 30,
         // automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
@@ -120,7 +120,6 @@ void logout(context) async {
     );
     print(response.data);
     storage.remove('token');
-    print(storage.read('token'));
 
     if (response.data['success'] == true) {
       Navigator.pushNamed(

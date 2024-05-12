@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:project_1/constants.dart';
@@ -99,6 +100,48 @@ class _InputFieldState extends State<InputField> {
               : null,
         ),
       ),
+    );
+  }
+}
+
+class CustomBottomNavigationBar extends StatefulWidget {
+  final List<BottomNavigationBarItem> items;
+  final int currentIndex;
+  final ValueChanged<int>? onTap;
+
+  const CustomBottomNavigationBar({
+    Key? key,
+    required this.items,
+    required this.currentIndex,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  State<CustomBottomNavigationBar> createState() =>
+      _CustomBottomNavigationBarState();
+}
+
+class _CustomBottomNavigationBarState
+    extends State<CustomBottomNavigationBar> {
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.currentIndex;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      items: widget.items,
+      currentIndex: _selectedIndex,
+      onTap: (index) {
+        setState(() {
+          _selectedIndex = index;
+        });
+        widget.onTap?.call(index);
+      },
     );
   }
 }
@@ -225,9 +268,9 @@ class DisplayImage extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 100,
-            backgroundImage: NetworkImage(imagePath),
+            backgroundImage: AssetImage(imagePath),
           ),
-          Positioned(
+          Container(
             child: 
               Container(
                 padding: EdgeInsets.all(4),
@@ -303,12 +346,7 @@ class UserProfileData extends StatelessWidget {
                   )
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacementNamed(
-                        context,
-                        '/login'
-                    );
-                  },
+                  onTap: onPressed,
                   child: Icon(
                     Icons.keyboard_arrow_right,
                     color: Colors.grey,
@@ -323,3 +361,5 @@ class UserProfileData extends StatelessWidget {
     );
   }
 }
+
+

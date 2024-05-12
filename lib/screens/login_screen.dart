@@ -151,13 +151,13 @@ void login(emailController, passwordController, context) async {
       }
     );
 
-    print (response.data);
+    print (response.data['data']['token']);
     storage.write('token', response.data['data']['token']);
 
     if (response.data['success'] == true) {
       Navigator.pushNamed(
         context,
-        '/profile'
+        '/dashboard'
       );
     }
   } on DioException catch (e) {
