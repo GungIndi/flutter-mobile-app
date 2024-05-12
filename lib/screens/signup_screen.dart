@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:project_1/components/components.dart';
+import 'package:project_1/components/loginRegisterComponents.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});

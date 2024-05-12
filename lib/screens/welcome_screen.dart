@@ -32,7 +32,7 @@ class WelcomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Job List', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600)),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
@@ -85,10 +85,19 @@ class WelcomeScreen extends StatelessWidget {
                   },
                 ),
               ),
+              
             ],
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+                items: const [
+                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.favorite), label: 'Favorite'),
+                  BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+                ],
+              ),
     );
   }
 }
