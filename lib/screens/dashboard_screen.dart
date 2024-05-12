@@ -15,8 +15,8 @@ class _DashboardScreenState extends State{
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final dio = Dio();
   final storage = GetStorage();
-  List<Anggota>? anggotaList; // Change to List<Anggota>?
-
+  List<Anggota>? anggotaList; 
+  
   Future<void> fetchData() async {
     try {
       Response response = await Dio().get(
@@ -115,6 +115,17 @@ class _DashboardScreenState extends State{
                 ),
         ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 17.0, 17.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            // Navigate to the screen to add a new item
+          },
+          child: Icon(Icons.add),
+          backgroundColor: Colors.white,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

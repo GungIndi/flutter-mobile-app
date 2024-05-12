@@ -25,33 +25,12 @@ class _ProfileScreenState extends State{
       ),
     );
     print('Response: $response');
+    
     if (response.data['success'] == true) {
       Map<String, dynamic> data = response.data;
       user = data['data']['user'];
       print('User: $user');
       setState(() {});
-    } else if (response.statusCode == 406) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Token Expired"),
-            content: Text("Your session has expired. Please login again."),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  // Navigate to login screen and remove all previous routes
-                  Navigator.pushNamed(
-                    context,
-                    '/login'
-                  );
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
     }
   } on DioException catch (e) {
     print('Error occurred: $e');
