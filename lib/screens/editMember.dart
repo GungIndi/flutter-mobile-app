@@ -41,11 +41,35 @@ class _EditMemberScreenState extends State{
         print('Anggota: $anggota');
         setState(() {});
       }
-    } catch (error) {
-      print('Error occurred: $error');
+    } on DioException catch (error) {
+      print('Error occurred: ${error.response}');
     }
   }
 
+  void editMember(BuildContext context, id) async {
+    try {
+      final response = await dio.put(
+        "$apiUrl/anggota/$id",
+        data: {
+          "nomor_induk": nomorIndukController.text.isNotEmpty ? nomorIndukController.text : anggota!['nomor_induk'],
+          "nama": namaController.text.isNotEmpty ? namaController.text : anggota!['nama'],
+          "alamat": alamatController.text.isNotEmpty ? alamatController.text : anggota!['alamat'],
+          "tgl_lahir": tglLahirController.text.isNotEmpty ? tglLahirController.text : anggota!['tgl_lahir'],
+          "telepon": teleponController.text.isNotEmpty ? teleponController.text : anggota!['telepon'],
+        },
+        options: Options(
+          headers: {'Authorization': 'Bearer ${storage.read('token')}'},
+        ),
+      );
+      print(response.data);
+      if (response.data['success'] == true) {
+        setState(() {});
+        Navigator.pushReplacementNamed(context, '/buttom');
+      }
+    } on DioException catch (error) {
+      print('Error occurred: ${error.response}');
+    }
+  }
   @override
   void initState() {
     super.initState();
@@ -65,7 +89,7 @@ class _EditMemberScreenState extends State{
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        // automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: anggota == null
@@ -85,9 +109,9 @@ class _EditMemberScreenState extends State{
                     TextField(
                       controller: nomorIndukController,
                       decoration: InputDecoration(
-                        labelText: anggota!['nomor_induk'].toString(),
-                        labelStyle: TextStyle(
-                          color: Colors.black,
+                        hintText: anggota!['nomor_induk'].toString(),
+                        hintStyle: TextStyle(
+                          color: Colors.grey[800],
                           fontWeight: FontWeight.w300,
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -95,18 +119,18 @@ class _EditMemberScreenState extends State{
                           borderRadius: BorderRadius.circular(12),                              
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
+                          borderSide: BorderSide(color: Colors.blue),    
                           borderRadius: BorderRadius.circular(12),                              
                         ),
                       ), 
                     ),
                     SizedBox(height: 10),
-                    TextField(
+                    TextFormField(
                       controller: namaController,
                       decoration: InputDecoration(
-                        labelText: anggota!['nama'],
-                        labelStyle: TextStyle(
-                          color: Colors.black,
+                        hintText: anggota!['nama'],
+                        hintStyle: TextStyle(
+                          color: Colors.grey[800],
                           fontWeight: FontWeight.w300,
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -114,7 +138,7 @@ class _EditMemberScreenState extends State{
                           borderRadius: BorderRadius.circular(12),                              
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
+                          borderSide: BorderSide(color: Colors.blue),    
                           borderRadius: BorderRadius.circular(12),                              
                         ),
                       ),
@@ -123,9 +147,9 @@ class _EditMemberScreenState extends State{
                     TextField(
                       controller: alamatController,
                       decoration: InputDecoration(
-                        labelText: anggota!['alamat'],
-                        labelStyle: TextStyle(
-                          color: Colors.black,
+                        hintText: anggota!['alamat'].toString(),
+                        hintStyle: TextStyle(
+                          color: Colors.grey[800],
                           fontWeight: FontWeight.w300,
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -133,18 +157,18 @@ class _EditMemberScreenState extends State{
                           borderRadius: BorderRadius.circular(12),                              
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
+                          borderSide: BorderSide(color: Colors.blue),    
                           borderRadius: BorderRadius.circular(12),                              
                         ),
-                      ),
+                      ), 
                     ),
                     SizedBox(height: 10),
                     TextField(
                       controller: tglLahirController,
                       decoration: InputDecoration(
-                        labelText: anggota!['tgl_lahir'],
-                        labelStyle: TextStyle(
-                          color: Colors.black,
+                        hintText: anggota!['tgl_lahir'].toString(),
+                        hintStyle: TextStyle(
+                          color: Colors.grey[800],
                           fontWeight: FontWeight.w300,
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -152,18 +176,18 @@ class _EditMemberScreenState extends State{
                           borderRadius: BorderRadius.circular(12),                              
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
+                          borderSide: BorderSide(color: Colors.blue),    
                           borderRadius: BorderRadius.circular(12),                              
                         ),
-                      ),
+                      ), 
                     ),
                     SizedBox(height: 10),
                     TextField(
                       controller: teleponController,
                       decoration: InputDecoration(
-                          labelText: anggota!['telepon'],
-                        labelStyle: TextStyle(
-                          color: Colors.black,
+                        hintText: anggota!['telepon'].toString(),
+                        hintStyle: TextStyle(
+                          color: Colors.grey[800],
                           fontWeight: FontWeight.w300,
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -171,10 +195,10 @@ class _EditMemberScreenState extends State{
                           borderRadius: BorderRadius.circular(12),                              
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
+                          borderSide: BorderSide(color: Colors.blue),    
                           borderRadius: BorderRadius.circular(12),                              
                         ),
-                      ),
+                      ), 
                     ),
                     
                     SizedBox(height: 20),
@@ -183,7 +207,7 @@ class _EditMemberScreenState extends State{
                       backgroundColor: Colors.blue, 
                       textColor: Colors.white, 
                       onPressed: (){
-                        // getMemberById(context,1);
+                        editMember(context, id);
                       }
                     )
                   ],

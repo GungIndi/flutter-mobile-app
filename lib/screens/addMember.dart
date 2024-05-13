@@ -35,8 +35,8 @@ class AddMemberScreen extends StatelessWidget {
       if (response.data['success'] == true) {
         Navigator.pushReplacementNamed(context, '/buttom');
       }
-    } catch (error) {
-      print('Error occurred: $error');
+    } on DioException catch (error) {
+      print('Error occurred: ${error.response}');
     }
   }
 

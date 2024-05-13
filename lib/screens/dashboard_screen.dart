@@ -199,6 +199,6 @@ void logout(context) async {
       );
     }
   } on DioException catch (e){
-    print(e.message);
+    print(e.response);
   }
 }

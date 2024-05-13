@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/provider/bottomNavigationBarProvider.dart';
 import 'package:project_1/screens/addMember.dart';
-import 'package:project_1/screens/editMember.dart';
 import 'package:project_1/screens/home_screen.dart';
 import 'package:project_1/screens/login_screen.dart';
 import 'package:project_1/screens/profile.dart';
