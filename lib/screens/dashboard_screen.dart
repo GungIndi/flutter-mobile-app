@@ -32,8 +32,25 @@ class _DashboardScreenState extends State{
         anggotaList = anggotaData.map((data) => Anggota.fromJson(data)).toList();
         setState(() {});
       }
-    } catch (error) {
-      print('Error occurred: $error');
+    } on DioException catch (error) {
+      print('Error occurred: ${error.response}');
+      String errorMessage = error.response!.data['message'];
+      if (error.response!.data['message'] != null && error.response!.data['message'].contains('Token is Expired')) {
+         errorMessage = 'Your Session is Over';
+      }
+      showDialog<String>(
+        context: context, 
+        builder: (BuildContext context) => AlertDialog(
+          title: Text('${errorMessage}'),
+          content: Text('Please Login'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () =>  Navigator.pushReplacementNamed(context, '/login'),
+              child: Text('Ok')
+            )
+          ],
+        )    
+      );
     }
   }
  
@@ -54,8 +71,8 @@ class _DashboardScreenState extends State{
     if (response.data['success'] == true) {
       Navigator.pushReplacementNamed(context, '/buttom');
     }
-  } on DioException catch (e){
-    print(e.message);
+  } on DioException catch (error) {
+    print('Error occurred: ${error.response}');
   }
   
 }

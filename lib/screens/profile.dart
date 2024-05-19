@@ -32,8 +32,25 @@ class _ProfileScreenState extends State{
       print('User: $user');
       setState(() {});
     }
-  } on DioException catch (e) {
-    print('Error occurred: $e');
+  } on DioException catch (error) {
+    print('Error occurred: ${error.response}');
+    String errorMessage = error.response!.data['message'];
+    if (error.response!.data['message'] != null && error.response!.data['message'].contains('Token is Expired')) {
+       errorMessage = 'Your Session is Over';
+    }
+    showDialog<String>(
+      context: context, 
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('${errorMessage}'),
+        content: Text('Please Login'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () =>  Navigator.pushReplacementNamed(context, '/login'),
+            child: Text('Ok')
+          )
+        ],
+      )    
+    );
   }
 }
 

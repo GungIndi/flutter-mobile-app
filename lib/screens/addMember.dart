@@ -37,6 +37,37 @@ class AddMemberScreen extends StatelessWidget {
       }
     } on DioException catch (error) {
       print('Error occurred: ${error.response}');
+
+      if (error.response != null && error.response!.data is Map<String, dynamic>) {
+        String errorMessage = error.response!.data['message'];
+        if (error.response!.data['message'] != null && error.response!.data['message'].contains('Invalid datetime format')) {
+          if(error.response!.data['message'].contains('Incorrect integer value')){
+            errorMessage = 'Nomor Induk must be an integer';
+          } else {
+            errorMessage = 'Tanggal lahir must be a date';
+          }
+        }
+        if (error.response!.data['message'] != null && error.response!.data['message'].contains('Integrity constraint violation')) {
+          if(error.response!.data['message'].contains('Duplicate entry')){
+            errorMessage = 'Nomor Induk Already Registered!';
+          } else {
+            errorMessage = 'Please fill all the fields';
+          }
+        }
+        showDialog<String>(
+          context: context, 
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('An Error Occured!'),
+            content: Text('${errorMessage}'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'No'),
+                child: Text('Ok')
+              )
+            ],
+          )    
+        );
+      }
     }
   }
 
@@ -67,6 +98,7 @@ class AddMemberScreen extends StatelessWidget {
                   controller: nomorIndukController,
                   decoration: InputDecoration(
                     labelText: 'Masukan Nomor Induk',
+                    floatingLabelStyle: TextStyle(color: Colors.blue),
                     labelStyle: TextStyle(
                       color: Color(0xff7A869A),
                       fontWeight: FontWeight.w300,
@@ -76,7 +108,7 @@ class AddMemberScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
+                      borderSide: BorderSide(color: Colors.blue),    
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                   ), 
@@ -86,6 +118,7 @@ class AddMemberScreen extends StatelessWidget {
                   controller: namaController,
                   decoration: InputDecoration(
                     labelText: 'Masukan Nama',
+                    floatingLabelStyle: TextStyle(color: Colors.blue),
                     labelStyle: TextStyle(
                       color: Color(0xff7A869A),
                       fontWeight: FontWeight.w300,
@@ -95,7 +128,7 @@ class AddMemberScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
+                      borderSide: BorderSide(color: Colors.blue),    
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                   ),
@@ -105,6 +138,7 @@ class AddMemberScreen extends StatelessWidget {
                   controller: alamatController,
                   decoration: InputDecoration(
                     labelText: 'Masukan Alamat',
+                    floatingLabelStyle: TextStyle(color: Colors.blue),
                     labelStyle: TextStyle(
                       color: Color(0xff7A869A),
                       fontWeight: FontWeight.w300,
@@ -114,7 +148,7 @@ class AddMemberScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
+                      borderSide: BorderSide(color: Colors.blue),    
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                   ),
@@ -125,6 +159,7 @@ class AddMemberScreen extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: '2000-03-31',
                     labelText: 'Masukan Tanggal Lahir',
+                    floatingLabelStyle: TextStyle(color: Colors.blue),
                     labelStyle: TextStyle(
                       color: Color(0xff7A869A),
                       fontWeight: FontWeight.w300,
@@ -134,7 +169,7 @@ class AddMemberScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
+                      borderSide: BorderSide(color: Colors.blue),    
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                   ),
@@ -142,8 +177,10 @@ class AddMemberScreen extends StatelessWidget {
                 SizedBox(height: 10),
                 TextField(
                   controller: teleponController,
-                  decoration: InputDecoration(labelText: 'Masukan Telepon',
-                  labelStyle: TextStyle(
+                  decoration: InputDecoration(
+                    labelText: 'Masukan Telepon',
+                    floatingLabelStyle: TextStyle(color: Colors.blue),
+                    labelStyle: TextStyle(
                       color: Color(0xff7A869A),
                       fontWeight: FontWeight.w300,
                     ),
@@ -152,7 +189,7 @@ class AddMemberScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
+                      borderSide: BorderSide(color: Colors.blue),    
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                   ),

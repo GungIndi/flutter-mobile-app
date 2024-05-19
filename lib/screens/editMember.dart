@@ -43,6 +43,23 @@ class _EditMemberScreenState extends State{
       }
     } on DioException catch (error) {
       print('Error occurred: ${error.response}');
+      String errorMessage = error.response!.data['message'];
+      if (error.response!.data['message'] != null && error.response!.data['message'].contains('Token is Expired')) {
+         errorMessage = 'Your Session is Over';
+      }
+      showDialog<String>(
+        context: context, 
+        builder: (BuildContext context) => AlertDialog(
+          title: Text('${errorMessage}'),
+          content: Text('Please Login'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () =>  Navigator.pushReplacementNamed(context, '/login'),
+              child: Text('Ok')
+            )
+          ],
+        )    
+      );
     }
   }
 
@@ -68,6 +85,33 @@ class _EditMemberScreenState extends State{
       }
     } on DioException catch (error) {
       print('Error occurred: ${error.response}');
+
+      if (error.response != null && error.response!.data is Map<String, dynamic>) {
+        String errorMessage = error.response!.data['message'];
+        if (error.response!.data['message'] != null && error.response!.data['message'].contains('Invalid datetime format')) {
+          if(error.response!.data['message'].contains('Incorrect integer value')){
+            errorMessage = 'Nomor Induk must be an integer';
+          } else {
+            errorMessage = 'Tanggal lahir must be a date';
+          }
+        }
+        if (error.response!.data['message'] != null && error.response!.data['message'].contains('Integrity constraint violation')) {
+          errorMessage = 'Nomor Induk Already Registered!';
+        }
+        showDialog<String>(
+          context: context, 
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('An Error Occured!'),
+            content: Text('${errorMessage}'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'No'),
+                child: Text('Ok')
+              )
+            ],
+          )    
+        );
+      }
     }
   }
   @override
@@ -89,7 +133,6 @@ class _EditMemberScreenState extends State{
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: anggota == null
@@ -200,7 +243,6 @@ class _EditMemberScreenState extends State{
                         ),
                       ), 
                     ),
-                    
                     SizedBox(height: 20),
                     CustomButton(
                       text: 'Edit Member', 
