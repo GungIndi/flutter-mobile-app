@@ -17,6 +17,7 @@ class _DashboardScreenState extends State{
   final dio = Dio();
   final storage = GetStorage();
   List<Anggota>? anggotaList; 
+  Map<String, dynamic> saldoDataMap = {};
 
   Future<void> fetchData() async {
     try {
@@ -30,8 +31,28 @@ class _DashboardScreenState extends State{
       if (response.data['success'] == true) {
         List<dynamic> anggotaData = response.data['data']['anggotas'];
         anggotaList = anggotaData.map((data) => Anggota.fromJson(data)).toList();
-        setState(() {});
+        for (var anggota in anggotaList!) {
+          String id = anggota.id.toString();
+          // fetch saldo
+          Response response2 = await Dio().get(
+            "$apiUrl/saldo/$id",
+            options: Options(
+              headers: {'Authorization': 'Bearer ${storage.read('token')}'},
+            )
+          );
+          print('Response 2: $response2');
+          if (response2.data['success'] == true) {
+            dynamic saldoData = response2.data['data'];
+            // Store saldo data in the map
+            saldoDataMap[id] = FormatCurrency.convertToIdr(saldoData['saldo'],2);
+          }
+        }
+        setState(() {
+          this.anggotaList = anggotaList;
+          this.saldoDataMap = saldoDataMap;
+        });
       }
+      
     } on DioException catch (error) {
       print('Error occurred: ${error.response}');
       String errorMessage = error.response!.data['message'];
@@ -74,7 +95,6 @@ class _DashboardScreenState extends State{
   } on DioException catch (error) {
     print('Error occurred: ${error.response}');
   }
-  
 }
 
   @override
@@ -127,10 +147,25 @@ class _DashboardScreenState extends State{
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            subtitle: Text('${anggotaList![index].alamat}\n${anggotaList![index].telepon}'),
+                            subtitle: 
+                              Text(
+                                '${anggotaList![index].telepon}\nSaldo: ${saldoDataMap['${anggotaList![index].id}']}'
+                              ),
+                              subtitleTextStyle: TextStyle(color: Colors.grey[800]),
                             trailing: Wrap(
-                              spacing: 15, // space between two icons
+                              spacing: 15,
                               children: <Widget>[
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditMemberScreen(id: anggotaList![index].id),
+                                      ),
+                                    );
+                                  },
+                                  child: Icon(Icons.attach_money_sharp)
+                                ),
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
