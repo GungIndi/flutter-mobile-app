@@ -40,48 +40,6 @@ class CustomButton extends StatelessWidget {
   }
 }
 
-class CustomBottomNavigationBar extends StatefulWidget {
-  final List<BottomNavigationBarItem> items;
-  final int currentIndex;
-  final ValueChanged<int>? onTap;
-
-  const CustomBottomNavigationBar({
-    Key? key,
-    required this.items,
-    required this.currentIndex,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  State<CustomBottomNavigationBar> createState() =>
-      _CustomBottomNavigationBarState();
-}
-
-class _CustomBottomNavigationBarState
-    extends State<CustomBottomNavigationBar> {
-  late int _selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedIndex = widget.currentIndex;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: widget.items,
-      currentIndex: _selectedIndex,
-      onTap: (index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-        widget.onTap?.call(index);
-      },
-    );
-  }
-}
-
 class DisplayImage extends StatelessWidget {
   final String imagePath;
   final VoidCallback onPressed;
@@ -224,13 +182,11 @@ class Anggota {
       alamat: json['alamat'],
       tglLahir: json['tgl_lahir'],
       telepon: json['telepon'],
-      imageUrl: json['image_url'] ?? '', // Handle null imageUrl
+      imageUrl: json['image_url'] ?? '',
       statusAktif: json['status_aktif'],
     );
   }
 }
-
-
 
 class ShowDialog{
   final String text;
@@ -255,34 +211,6 @@ class ShowDialog{
   }
 }
 
-
-class CustomDialog {
-  Future<String?> showAlertDialog(
-    BuildContext context, {
-    required String title,
-    required String content,
-    required String cancelText,
-    required String okText,
-  }) {
-    return showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, cancelText),
-            child: Text(cancelText),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, okText),
-            child: Text(okText),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class InputFieldMember extends StatelessWidget {
   final String? labelText;

@@ -30,12 +30,14 @@ class _ButtomNavigationProviderScreenState extends State<ButtomNavigationProvide
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
             label: 'Home',
+            
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.person),
             label: 'Profile',
           ),
         ],
+        selectedItemColor: Colors.blue,
       ),
     );
   }

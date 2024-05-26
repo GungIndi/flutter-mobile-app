@@ -209,7 +209,9 @@ class _DashboardScreenState extends State{
                   },
                 )
               : Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
                 ),
         ),
       ),

@@ -76,7 +76,7 @@ class CustomCheckbox extends StatefulWidget {
     this.value = false,
     this.onChanged,
   });
-
+  
   @override
   _CustomCheckboxState createState() => _CustomCheckboxState();
 }
