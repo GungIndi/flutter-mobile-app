@@ -282,3 +282,46 @@ class CustomDialog {
     );
   }
 }
+
+class InputFieldMember extends StatelessWidget {
+  final String labelText;
+  final TextEditingController controller;
+  final VoidCallback? onTap;
+  final bool readOnly;
+  final Icon? prefixIcon;
+
+  const InputFieldMember({
+    Key? key,
+    required this.labelText,
+    required this.controller,
+    this.onTap,
+    this.readOnly = false,
+    this.prefixIcon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        floatingLabelStyle: TextStyle(color: Colors.blue),
+        prefixIcon: prefixIcon,
+        labelStyle: TextStyle(
+          color: Color(0xff7A869A),
+          fontWeight: FontWeight.w300,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue),
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      readOnly: readOnly,
+      onTap: onTap,
+    );
+  }
+}

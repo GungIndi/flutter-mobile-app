@@ -128,10 +128,6 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
 }    
 
 class SocialMediaIcon extends StatelessWidget {
-  const SocialMediaIcon({
-    super.key,
-  });
-
   @override
   Widget build(BuildContext context) {
     return Row(

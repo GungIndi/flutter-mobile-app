@@ -10,7 +10,6 @@ class AddMemberScreen extends StatefulWidget {
   _AddMemberScreenState createState() => _AddMemberScreenState();
 }
 
-
 class _AddMemberScreenState extends State{
   final TextEditingController nomorIndukController = TextEditingController();
   final TextEditingController namaController = TextEditingController();
@@ -118,109 +117,33 @@ class _AddMemberScreenState extends State{
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
-                TextField(
+                InputFieldMember(
+                  labelText: 'Masukan Nomor Induk', 
                   controller: nomorIndukController,
-                  decoration: InputDecoration(
-                    labelText: 'Masukan Nomor Induk',
-                    floatingLabelStyle: TextStyle(color: Colors.blue),
-                    labelStyle: TextStyle(
-                      color: Color(0xff7A869A),
-                      fontWeight: FontWeight.w300,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                  ), 
                 ),
-                SizedBox(height: 10),
-                TextField(
+                SizedBox(height: 20),
+                InputFieldMember(
+                  labelText: 'Masukan Nama', 
                   controller: namaController,
-                  decoration: InputDecoration(
-                    labelText: 'Masukan Nama',
-                    floatingLabelStyle: TextStyle(color: Colors.blue),
-                    labelStyle: TextStyle(
-                      color: Color(0xff7A869A),
-                      fontWeight: FontWeight.w300,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                  ),
                 ),
-                SizedBox(height: 10),
-                TextField(
+                SizedBox(height: 20),
+                InputFieldMember(
+                  labelText: 'Masukan Alamat', 
                   controller: alamatController,
-                  decoration: InputDecoration(
-                    labelText: 'Masukan Alamat',
-                    floatingLabelStyle: TextStyle(color: Colors.blue),
-                    labelStyle: TextStyle(
-                      color: Color(0xff7A869A),
-                      fontWeight: FontWeight.w300,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                  ),
                 ),
-                SizedBox(height: 10),
-                TextField(
+                SizedBox(height: 20),
+                InputFieldMember(
+                  labelText: 'Masukan Tanggal Lahir', 
                   controller: tglLahirController,
-                  decoration: InputDecoration(
-                    labelText: 'Masukan Tanggal Lahir',
-                    floatingLabelStyle: TextStyle(color: Colors.blue),
-                    prefixIcon: Icon(Icons.calendar_today),
-                    labelStyle: TextStyle(
-                      color: Color(0xff7A869A),
-                      fontWeight: FontWeight.w300,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                  ),
                   readOnly: true,
-                  onTap: () => _selectDate(context),
+                  prefixIcon: Icon(Icons.calendar_today),
+                  onTap: ()=>_selectDate(context),
                 ),
-                SizedBox(height: 10),
-                TextField(
+                SizedBox(height: 20),
+                InputFieldMember(
+                  labelText: 'Masukan Nomor Telepon', 
                   controller: teleponController,
-                  decoration: InputDecoration(
-                    labelText: 'Masukan Telepon',
-                    floatingLabelStyle: TextStyle(color: Colors.blue),
-                    labelStyle: TextStyle(
-                      color: Color(0xff7A869A),
-                      fontWeight: FontWeight.w300,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),    
-                      borderRadius: BorderRadius.circular(12),                              
-                    ),
-                  ),
                 ),
-                
                 SizedBox(height: 20),
                 CustomButton(
                   text: 'Add Member', 
