@@ -3,9 +3,15 @@ import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
 
-class AddMemberScreen extends StatelessWidget {
+class AddMemberScreen extends StatefulWidget {
   AddMemberScreen({Key? key}) : super(key: key);
 
+  @override
+  _AddMemberScreenState createState() => _AddMemberScreenState();
+}
+
+
+class _AddMemberScreenState extends State{
   final TextEditingController nomorIndukController = TextEditingController();
   final TextEditingController namaController = TextEditingController();
   final TextEditingController alamatController = TextEditingController();
@@ -43,8 +49,6 @@ class AddMemberScreen extends StatelessWidget {
         if (error.response!.data['message'] != null && error.response!.data['message'].contains('Invalid datetime format')) {
           if(error.response!.data['message'].contains('Incorrect integer value')){
             errorMessage = 'Nomor Induk must be an integer';
-          } else {
-            errorMessage = 'Tanggal lahir must be a date';
           }
         }
         if (error.response!.data['message'] != null && error.response!.data['message'].contains('Integrity constraint violation')) {
@@ -66,10 +70,30 @@ class AddMemberScreen extends StatelessWidget {
               )
             ],
           )    
-        );
+        );      
       }
     }
   }
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? _selected = await showDatePicker(
+      context: context, 
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100)
+    ); 
+    if(_selected != null ){
+      setState((){
+        tglLahirController.text = _selected.toString().split(" ")[0];
+      });
+    }
+  }   
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -157,9 +181,9 @@ class AddMemberScreen extends StatelessWidget {
                 TextField(
                   controller: tglLahirController,
                   decoration: InputDecoration(
-                    hintText: '2000-03-31',
                     labelText: 'Masukan Tanggal Lahir',
                     floatingLabelStyle: TextStyle(color: Colors.blue),
+                    prefixIcon: Icon(Icons.calendar_today),
                     labelStyle: TextStyle(
                       color: Color(0xff7A869A),
                       fontWeight: FontWeight.w300,
@@ -173,6 +197,8 @@ class AddMemberScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),                              
                     ),
                   ),
+                  readOnly: true,
+                  onTap: () => _selectDate(context),
                 ),
                 SizedBox(height: 10),
                 TextField(

@@ -161,7 +161,34 @@ void login(emailController, passwordController, context) async {
         '/buttom'
       );
     }
-  } on DioException catch (e) {
-    print(" Error ${e.response?.statusCode} - ${e.response?.data} ");
+  } on DioException catch (error) {
+    print(" Error : ${error.response?.statusCode} - ${error.response?.data} ");
+    if (error.response != null && error.response!.data is Map<String, dynamic>) {
+      String errorMessage = "hello" ;
+      if (error.response!.data['message'].contains('Something error')){
+        if(error.response!.data['data']['errors'].containsKey('email')){
+          errorMessage = 'The email field must be a valid email address';
+        } else if(error.response!.data['data']['errors'].containsKey('password')){
+          errorMessage = 'The password field must be at least 6 characters';
+        }
+      }
+      if(error.response!.data['message'].contains('Invalid')){
+        errorMessage = error.response!.data['message'];
+      }
+      print(error.response!.data);
+      showDialog<String>(
+        context: context, 
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('An Error Occured!'),
+          content: Text('${errorMessage}'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'No'),
+              child: Text('Ok')
+            )
+          ],
+        )    
+      );
+    }
   }
 }

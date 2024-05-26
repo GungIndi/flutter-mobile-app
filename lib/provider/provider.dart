@@ -4,17 +4,13 @@ import 'package:project_1/screens/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:project_1/provider/bottomNavigationBarProvider.dart';
 
-
-
 class ButtomNavigationProviderScreen extends StatefulWidget {
   @override
   _ButtomNavigationProviderScreenState createState() =>
       _ButtomNavigationProviderScreenState();
 }
 
-class _ButtomNavigationProviderScreenState
-    extends State<ButtomNavigationProviderScreen> {
-      
+class _ButtomNavigationProviderScreenState extends State<ButtomNavigationProviderScreen> {
   var currentTab = [
     DashboardScreen(),
     ProfileScreen(),

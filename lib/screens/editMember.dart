@@ -114,6 +114,22 @@ class _EditMemberScreenState extends State{
       }
     }
   }
+
+   Future<void> _selectDate(BuildContext context) async {
+    DateTime? _selected = await showDatePicker(
+      context: context, 
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100)
+    ); 
+    if(_selected != null ){
+      setState((){
+        tglLahirController.text = _selected.toString().split(" ")[0];
+      });
+    }
+  }   
+
+
   @override
   void initState() {
     super.initState();
@@ -209,8 +225,10 @@ class _EditMemberScreenState extends State{
                     TextField(
                       controller: tglLahirController,
                       decoration: InputDecoration(
-                        hintText: anggota!['tgl_lahir'].toString(),
-                        hintStyle: TextStyle(
+                        labelText: anggota!['tgl_lahir'].toString(),
+                        floatingLabelStyle: TextStyle(color: Colors.blue),
+                        prefixIcon: Icon(Icons.calendar_today),
+                        labelStyle: TextStyle(
                           color: Colors.grey[800],
                           fontWeight: FontWeight.w300,
                         ),
@@ -222,7 +240,9 @@ class _EditMemberScreenState extends State{
                           borderSide: BorderSide(color: Colors.blue),    
                           borderRadius: BorderRadius.circular(12),                              
                         ),
-                      ), 
+                      ),
+                      readOnly: true,
+                      onTap: () => _selectDate(context),
                     ),
                     SizedBox(height: 10),
                     TextField(
