@@ -284,7 +284,8 @@ class CustomDialog {
 }
 
 class InputFieldMember extends StatelessWidget {
-  final String labelText;
+  final String? labelText;
+  final String? hintText;
   final TextEditingController controller;
   final VoidCallback? onTap;
   final bool readOnly;
@@ -292,7 +293,8 @@ class InputFieldMember extends StatelessWidget {
 
   const InputFieldMember({
     Key? key,
-    required this.labelText,
+    this.labelText,
+    this.hintText,
     required this.controller,
     this.onTap,
     this.readOnly = false,
@@ -307,6 +309,11 @@ class InputFieldMember extends StatelessWidget {
         labelText: labelText,
         floatingLabelStyle: TextStyle(color: Colors.blue),
         prefixIcon: prefixIcon,
+        hintText: hintText,
+        hintStyle: TextStyle(
+          color: Colors.grey[800],
+          fontWeight: FontWeight.w300,
+        ),
         labelStyle: TextStyle(
           color: Color(0xff7A869A),
           fontWeight: FontWeight.w300,

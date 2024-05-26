@@ -165,103 +165,32 @@ class _EditMemberScreenState extends State{
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 20),
-                    TextField(
+                    InputFieldMember(
+                      hintText: anggota!['nomor_induk'].toString(), 
                       controller: nomorIndukController,
-                      decoration: InputDecoration(
-                        hintText: anggota!['nomor_induk'].toString(),
-                        hintStyle: TextStyle(
-                          color: Colors.grey[800],
-                          fontWeight: FontWeight.w300,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                      ), 
                     ),
                     SizedBox(height: 10),
-                    TextFormField(
+                    InputFieldMember(
+                      hintText: anggota!['nama'].toString(), 
                       controller: namaController,
-                      decoration: InputDecoration(
-                        hintText: anggota!['nama'],
-                        hintStyle: TextStyle(
-                          color: Colors.grey[800],
-                          fontWeight: FontWeight.w300,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                      ),
                     ),
                     SizedBox(height: 10),
-                    TextField(
+                    InputFieldMember(
+                      hintText: anggota!['alamat'].toString(), 
                       controller: alamatController,
-                      decoration: InputDecoration(
-                        hintText: anggota!['alamat'].toString(),
-                        hintStyle: TextStyle(
-                          color: Colors.grey[800],
-                          fontWeight: FontWeight.w300,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                      ), 
                     ),
                     SizedBox(height: 10),
-                    TextField(
+                    InputFieldMember(
+                      hintText: anggota!['tgl_lahir'].toString(),
                       controller: tglLahirController,
-                      decoration: InputDecoration(
-                        labelText: anggota!['tgl_lahir'].toString(),
-                        floatingLabelStyle: TextStyle(color: Colors.blue),
-                        prefixIcon: Icon(Icons.calendar_today),
-                        labelStyle: TextStyle(
-                          color: Colors.grey[800],
-                          fontWeight: FontWeight.w300,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                      ),
                       readOnly: true,
-                      onTap: () => _selectDate(context),
+                      prefixIcon: Icon(Icons.calendar_today),
+                      onTap: ()=>_selectDate(context),
                     ),
                     SizedBox(height: 10),
-                    TextField(
+                    InputFieldMember(
+                      hintText: anggota!['telepon'].toString(), 
                       controller: teleponController,
-                      decoration: InputDecoration(
-                        hintText: anggota!['telepon'].toString(),
-                        hintStyle: TextStyle(
-                          color: Colors.grey[800],
-                          fontWeight: FontWeight.w300,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue),    
-                          borderRadius: BorderRadius.circular(12),                              
-                        ),
-                      ), 
                     ),
                     SizedBox(height: 20),
                     CustomButton(
