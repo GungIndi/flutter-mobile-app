@@ -314,6 +314,7 @@ class InputFieldMember extends StatelessWidget {
         hintStyle: TextStyle(
           color: Colors.grey[800],
           fontWeight: FontWeight.w300,
+          fontSize: 16
         ),
         labelStyle: TextStyle(
           color: Color(0xff7A869A),
@@ -342,5 +343,33 @@ class FormatCurrency {
       decimalDigits: decimalDigit,
     );
     return currencyFormatter.format(number);
+  }
+}
+
+class FieldHeader extends StatelessWidget {
+  final String text;
+
+  const FieldHeader({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5.0, 0, 0, 1.5),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 17,
+              fontWeight: FontWeight.w500
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

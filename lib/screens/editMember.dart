@@ -25,6 +25,7 @@ class _EditMemberScreenState extends State{
   final TextEditingController alamatController = TextEditingController();
   final TextEditingController tglLahirController = TextEditingController();
   final TextEditingController teleponController = TextEditingController();
+  final TextEditingController statusController = TextEditingController();
 
   Future<void> fetchData(id) async {
     try {
@@ -73,6 +74,7 @@ class _EditMemberScreenState extends State{
           "alamat": alamatController.text.isNotEmpty ? alamatController.text : anggota!['alamat'],
           "tgl_lahir": tglLahirController.text.isNotEmpty ? tglLahirController.text : anggota!['tgl_lahir'],
           "telepon": teleponController.text.isNotEmpty ? teleponController.text : anggota!['telepon'],
+          "status_aktif": statusController.text.isNotEmpty ? statusController.text : anggota!['status_aktif'],
         },
         options: Options(
           headers: {'Authorization': 'Bearer ${storage.read('token')}'},
@@ -115,7 +117,7 @@ class _EditMemberScreenState extends State{
     }
   }
 
-   Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     DateTime? _selected = await showDatePicker(
       context: context, 
       initialDate: DateTime.now(),
@@ -128,7 +130,6 @@ class _EditMemberScreenState extends State{
       });
     }
   }   
-
 
   @override
   void initState() {
@@ -160,26 +161,30 @@ class _EditMemberScreenState extends State{
           : SingleChildScrollView(
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 20),
+                    FieldHeader(text: 'Nomor Induk'),
                     InputFieldMember(
                       hintText: anggota!['nomor_induk'].toString(), 
                       controller: nomorIndukController,
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
+                    FieldHeader(text: 'Nama'),
                     InputFieldMember(
                       hintText: anggota!['nama'].toString(), 
                       controller: namaController,
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
+                    FieldHeader(text: 'Alamat'),
                     InputFieldMember(
                       hintText: anggota!['alamat'].toString(), 
                       controller: alamatController,
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
+                    FieldHeader(text: 'Tanggal Lahir'),
                     InputFieldMember(
                       hintText: anggota!['tgl_lahir'].toString(),
                       controller: tglLahirController,
@@ -187,9 +192,16 @@ class _EditMemberScreenState extends State{
                       prefixIcon: Icon(Icons.calendar_today),
                       onTap: ()=>_selectDate(context),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 15),
+                    FieldHeader(text: 'Telepon'),
                     InputFieldMember(
                       hintText: anggota!['telepon'].toString(), 
+                      controller: teleponController,
+                    ),
+                    SizedBox(height: 15),
+                    FieldHeader(text: 'Status Aktif'),
+                    InputFieldMember(
+                      hintText: anggota!['status_aktif'].toString(), 
                       controller: teleponController,
                     ),
                     SizedBox(height: 20),
