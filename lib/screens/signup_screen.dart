@@ -156,8 +156,31 @@ void SignUp(usernameController, emailController, passwordController, context) as
         '/login'
       );
     }
-  } on DioException catch (e) {
-    print(" Error ${e.response?.statusCode} - ${e.response?.data} ");
+  } on DioException catch (error) {
+    print(" Error ${error.response?.statusCode} - ${error.response?.data} ");
+    String errorMessage = "" ;
+    if (error.response != null && error.response!.data is Map<String, dynamic>) {
+      if (error.response!.data.containsKey('message')){
+        var e = error.response!.data['message'];
+        if(e.isNotEmpty){
+          errorMessage = e.values.first[0].toString();
+        }
+      }
+    }
+    print(error.response!.data);
+    showDialog<String>(
+      context: context, 
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('An Error Occured!'),
+        content: Text('${errorMessage}'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'No'),
+            child: Text('Ok')
+          )
+        ],
+      )    
+    );
   }
 }
 
