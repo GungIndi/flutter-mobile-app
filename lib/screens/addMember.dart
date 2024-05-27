@@ -107,7 +107,6 @@ class _AddMemberScreenState extends State{
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        // automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: SafeArea(

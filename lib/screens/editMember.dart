@@ -18,14 +18,19 @@ class _EditMemberScreenState extends State{
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final dio = Dio();
   final storage = GetStorage();
-  Map<String, dynamic>? anggota; 
+  Map<String, dynamic>? anggota;
+
+  String dropDownValue = '1';
+  var items = [
+    '1',
+    '2',
+  ];
 
   final TextEditingController nomorIndukController = TextEditingController();
   final TextEditingController namaController = TextEditingController();
   final TextEditingController alamatController = TextEditingController();
   final TextEditingController tglLahirController = TextEditingController();
   final TextEditingController teleponController = TextEditingController();
-  final TextEditingController statusController = TextEditingController();
 
   Future<void> fetchData(id) async {
     try {
@@ -74,7 +79,7 @@ class _EditMemberScreenState extends State{
           "alamat": alamatController.text.isNotEmpty ? alamatController.text : anggota!['alamat'],
           "tgl_lahir": tglLahirController.text.isNotEmpty ? tglLahirController.text : anggota!['tgl_lahir'],
           "telepon": teleponController.text.isNotEmpty ? teleponController.text : anggota!['telepon'],
-          "status_aktif": statusController.text.isNotEmpty ? statusController.text : anggota!['status_aktif'],
+          "status_aktif": dropDownValue,
         },
         options: Options(
           headers: {'Authorization': 'Bearer ${storage.read('token')}'},
@@ -199,10 +204,15 @@ class _EditMemberScreenState extends State{
                       controller: teleponController,
                     ),
                     SizedBox(height: 15),
-                    FieldHeader(text: 'Status Aktif'),
-                    InputFieldMember(
-                      hintText: anggota!['status_aktif'].toString(), 
-                      controller: teleponController,
+                    FieldHeader(text: 'Status'),
+                    CustomDropdown(
+                      value: anggota!['status_aktif'].toString(), 
+                      items: items, 
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropDownValue = newValue!;
+                        });
+                      },
                     ),
                     SizedBox(height: 20),
                     CustomButton(

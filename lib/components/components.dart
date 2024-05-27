@@ -301,3 +301,44 @@ class FieldHeader extends StatelessWidget {
     );
   }
 }
+
+class CustomDropdown extends StatelessWidget {
+  final String value;
+  final List<String> items;
+  final ValueChanged<String?> onChanged;
+  final InputDecoration? decoration;
+  final Icon? icon;
+
+  CustomDropdown({
+    required this.value,
+    required this.items,
+    required this.onChanged,
+    this.decoration,
+    this.icon = const Icon(Icons.keyboard_arrow_down),
+  });
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: value,
+      icon: icon,
+      decoration: decoration ?? InputDecoration(
+        floatingLabelStyle: TextStyle(color: Colors.blue),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blue),
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      items: items.map((String item) {
+        return DropdownMenuItem(
+          value: item,
+          child: item =='1' ? Text('Aktif') : Text('Tidak Aktif'),
+        );
+      }).toList(),
+      onChanged: onChanged,
+    );
+  }
+}

@@ -8,6 +8,7 @@ import 'package:project_1/provider/provider.dart';
 import 'package:project_1/screens/signup_screen.dart';
 import 'package:project_1/screens/dashboard_screen.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:project_1/screens/transaction.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {

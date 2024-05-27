@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
 import 'package:project_1/screens/editMember.dart';
+import 'package:project_1/screens/transaction.dart';
 
 
 class DashboardScreen extends StatefulWidget {
@@ -160,7 +161,7 @@ class _DashboardScreenState extends State{
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => EditMemberScreen(id: anggotaList![index].id),
+                                        builder: (context) => TransactionScreen(id: anggotaList![index].id),
                                       ),
                                     );
                                   },
