@@ -32,22 +32,6 @@ class _DashboardScreenState extends State{
       if (response.data['success'] == true) {
         List<dynamic> anggotaData = response.data['data']['anggotas'];
         anggotaList = anggotaData.map((data) => Anggota.fromJson(data)).toList();
-        for (var anggota in anggotaList!) {
-          String id = anggota.id.toString();
-          // fetch saldo
-          Response response2 = await Dio().get(
-            "$apiUrl/saldo/$id",
-            options: Options(
-              headers: {'Authorization': 'Bearer ${storage.read('token')}'},
-            )
-          );
-          print('Response 2: $response2');
-          if (response2.data['success'] == true) {
-            dynamic saldoData = response2.data['data'];
-            // Store saldo data in the map
-            saldoDataMap[id] = FormatCurrency.convertToIdr(saldoData['saldo'],2);
-          }
-        }
         setState(() {
           this.anggotaList = anggotaList;
           this.saldoDataMap = saldoDataMap;
@@ -122,7 +106,7 @@ class _DashboardScreenState extends State{
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(5, 10, 5, 20),
+          padding: const EdgeInsets.fromLTRB(6, 10, 6, 20),
           child: anggotaList != null
               ? ListView.builder(
                   itemCount: anggotaList!.length,
@@ -131,13 +115,14 @@ class _DashboardScreenState extends State{
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                         side: BorderSide(
-                          color: Colors.grey.withOpacity(0.3),
+                          color: Colors.grey.withOpacity(0.2),
                           width: 1,
                         ),
                       ),
                       child: Container(
                         decoration: BoxDecoration(color: Colors.white),
                         child: ListTile(
+                          minVerticalPadding: 13,
                           title: Text(
                             anggotaList![index].nama,
                             style: TextStyle(
@@ -148,7 +133,7 @@ class _DashboardScreenState extends State{
                           ),
                           subtitle: 
                             Text(
-                              '${anggotaList![index].telepon}\nSaldo: ${saldoDataMap['${anggotaList![index].id}']}'
+                              '${anggotaList![index].telepon}'
                             ),
                             subtitleTextStyle: TextStyle(color: Colors.grey[800]),
                           trailing: Wrap(
@@ -163,7 +148,7 @@ class _DashboardScreenState extends State{
                                     ),
                                   );
                                 },
-                                child: Icon(Icons.attach_money_sharp)
+                                child: Icon(Icons.payment_outlined)
                               ),
                               GestureDetector(
                                 onTap: () {
