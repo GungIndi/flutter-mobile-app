@@ -116,22 +116,22 @@ class _AddMemberScreenState extends State{
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
-                InputFieldMember(
+                CustomInputField(
                   labelText: 'Masukan Nomor Induk', 
                   controller: nomorIndukController,
                 ),
                 SizedBox(height: 20),
-                InputFieldMember(
+                CustomInputField(
                   labelText: 'Masukan Nama', 
                   controller: namaController,
                 ),
                 SizedBox(height: 20),
-                InputFieldMember(
+                CustomInputField(
                   labelText: 'Masukan Alamat', 
                   controller: alamatController,
                 ),
                 SizedBox(height: 20),
-                InputFieldMember(
+                CustomInputField(
                   labelText: 'Masukan Tanggal Lahir', 
                   controller: tglLahirController,
                   readOnly: true,
@@ -139,7 +139,7 @@ class _AddMemberScreenState extends State{
                   onTap: ()=>_selectDate(context),
                 ),
                 SizedBox(height: 20),
-                InputFieldMember(
+                CustomInputField(
                   labelText: 'Masukan Nomor Telepon', 
                   controller: teleponController,
                 ),

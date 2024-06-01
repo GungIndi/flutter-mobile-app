@@ -21,10 +21,10 @@ class _EditMemberScreenState extends State{
   Map<String, dynamic>? anggota;
 
   String dropDownValue = '1';
-  var items = [
-    '1',
-    '2',
-  ];
+  var items = {
+    '1' : 'Aktif',
+    '2' : 'Tidak Aktif',
+  };
 
   final TextEditingController nomorIndukController = TextEditingController();
   final TextEditingController namaController = TextEditingController();
@@ -170,27 +170,27 @@ class _EditMemberScreenState extends State{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: 15),
                     FieldHeader(text: 'Nomor Induk'),
-                    InputFieldMember(
+                    CustomInputField(
                       hintText: anggota!['nomor_induk'].toString(), 
                       controller: nomorIndukController,
                     ),
                     SizedBox(height: 15),
                     FieldHeader(text: 'Nama'),
-                    InputFieldMember(
+                    CustomInputField(
                       hintText: anggota!['nama'].toString(), 
                       controller: namaController,
                     ),
                     SizedBox(height: 15),
                     FieldHeader(text: 'Alamat'),
-                    InputFieldMember(
+                    CustomInputField(
                       hintText: anggota!['alamat'].toString(), 
                       controller: alamatController,
                     ),
                     SizedBox(height: 15),
                     FieldHeader(text: 'Tanggal Lahir'),
-                    InputFieldMember(
+                    CustomInputField(
                       hintText: anggota!['tgl_lahir'].toString(),
                       controller: tglLahirController,
                       readOnly: true,
@@ -199,7 +199,7 @@ class _EditMemberScreenState extends State{
                     ),
                     SizedBox(height: 15),
                     FieldHeader(text: 'Telepon'),
-                    InputFieldMember(
+                    CustomInputField(
                       hintText: anggota!['telepon'].toString(), 
                       controller: teleponController,
                     ),

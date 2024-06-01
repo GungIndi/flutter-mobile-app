@@ -212,7 +212,7 @@ class ShowDialog{
 }
 
 
-class InputFieldMember extends StatelessWidget {
+class CustomInputField extends StatelessWidget {
   final String? labelText;
   final String? hintText;
   final TextEditingController controller;
@@ -220,7 +220,7 @@ class InputFieldMember extends StatelessWidget {
   final bool readOnly;
   final Icon? prefixIcon;
 
-  const InputFieldMember({
+  const CustomInputField({
     Key? key,
     this.labelText,
     this.hintText,
@@ -240,7 +240,7 @@ class InputFieldMember extends StatelessWidget {
         prefixIcon: prefixIcon,
         hintText: hintText,
         hintStyle: TextStyle(
-          color: Colors.grey[800],
+          color: Colors.grey[600],
           fontWeight: FontWeight.w300,
           fontSize: 16
         ),
@@ -304,7 +304,7 @@ class FieldHeader extends StatelessWidget {
 
 class CustomDropdown extends StatelessWidget {
   final String value;
-  final List<String> items;
+  final Map<String, dynamic> items;
   final ValueChanged<String?> onChanged;
   final InputDecoration? decoration;
   final Icon? icon;
@@ -332,13 +332,34 @@ class CustomDropdown extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
       ),
-      items: items.map((String item) {
-        return DropdownMenuItem(
-          value: item,
-          child: item =='1' ? Text('Aktif') : Text('Tidak Aktif'),
+      items: items.entries.map((entry) {
+        return DropdownMenuItem<String>(
+          value: entry.key,
+          child: Text(entry.value),
         );
       }).toList(),
       onChanged: onChanged,
+    );
+  }
+}
+
+class CustomModalBottomSheet extends StatelessWidget {
+  final List<Widget> content;
+
+  CustomModalBottomSheet({required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 400,
+      child: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          children: [
+            ...content,
+          ],
+        ),
+      ),
     );
   }
 }

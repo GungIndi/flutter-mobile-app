@@ -22,13 +22,16 @@ class _TransactionScreenState extends State{
   dynamic saldoData;
 
   String dropDownValue = '1';
-  var items = [
-    '1',
-    '2',
-    '3',
-  ];
+  var items = {
+    '1' : 'Saldo awal',
+    '2' : 'Simpanan',
+    '3' : 'Penarikan',
+    // '4' : 'Bunga Simpanan',
+    '5' : 'Koreksi Penambahan',
+    '6' : 'Koreksi Pengurangan',
+  };
 
-   String getTransactionType(int trxId) {
+  String getTransactionType(int trxId) {
     switch (trxId) {
       case 1:
         return 'Saldo Awal';
@@ -36,15 +39,72 @@ class _TransactionScreenState extends State{
         return 'Simpanan';
       case 3:
         return 'Penarikan';
+      case 4:
+        return 'Bunga Simpanan';
+      case 5:
+        return 'Koreksi Penambahan';
+      case 6:
+        return 'Koreksi Pengurangan';
       default:
         return 'Unknown';
     }
   }
-  final TextEditingController nomorIndukController = TextEditingController();
-  final TextEditingController namaController = TextEditingController();
-  final TextEditingController alamatController = TextEditingController();
-  final TextEditingController tglLahirController = TextEditingController();
-  final TextEditingController teleponController = TextEditingController();
+
+  void addTransaction(BuildContext context) async {
+    try{
+      final response = await dio.post(
+        '$apiUrl/tabungan',
+        data: {
+          "anggota_id" : id,
+          "trx_id" : dropDownValue,
+          "trx_nominal" : trxNominalController.text
+        },
+        options: Options(
+          headers: {'Authorization' : 'Bearer ${storage.read('token')}'}
+        )
+      );
+      print(response.data);
+      if (response.data['success'] == true) {
+        Navigator.pop(context);
+        fetchData(id);
+      }
+    } on DioException catch (error){
+      print(error.response);
+      String errorMessage = error.response!.data['message'].toString();
+      print('asdjaldjlsa: $errorMessage');
+      if(errorMessage.contains('`Setoran Awal`')){
+        errorMessage = error.response!.data['message'];
+      }
+      if (error.response != null && error.response!.data is Map<String, dynamic>) {
+        if (error.response!.data['message'] != null && error.response!.data['message'].contains('trx nominal field')) {
+          errorMessage = 'Nominal Field is Required';
+        }
+        if (error.response!.data['message'] != null && error.response!.data['message'].contains('Integrity constraint violation')) {
+          if(error.response!.data['message'].contains('Duplicate entry')){
+            errorMessage = 'Nomor Induk Already Registered!';
+          } else {
+            errorMessage = 'Please fill all the fields';
+          }
+        }
+        showDialog<String>(
+          context: context, 
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('An Error Occured!'),
+            content: Text('${errorMessage}'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'No'),
+                child: Text('Ok')
+              )
+            ],
+          )    
+        );      
+      }
+    }
+  }
+
+  final TextEditingController trxNominalController = TextEditingController();
+  final TextEditingController trxIdController = TextEditingController();
 
   Future<void> fetchData(id) async {
     try {
@@ -79,6 +139,7 @@ class _TransactionScreenState extends State{
       if (error.response!.data['message'] != null && error.response!.data['message'].contains('Token is Expired')) {
          errorMessage = 'Your Session is Over';
       }
+
       showDialog<String>(
         context: context, 
         builder: (BuildContext context) => AlertDialog(
@@ -93,6 +154,80 @@ class _TransactionScreenState extends State{
         )    
       );
     }
+  }
+  void _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomModalBottomSheet(
+          content: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center  ,
+              children: [
+                Text(
+                  'Tambah Transaksi',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start  ,
+              children: [
+                Text(
+                  'Nominal',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            CustomInputField(
+              hintText: 'Masukan Nominal', 
+              controller: trxNominalController,
+            ),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start  ,
+              children: [
+                Text(
+                  'Jenis Transaksi',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            CustomDropdown(
+              value: '1',
+              items: items,
+              onChanged: (String?  value) {
+                setState(() {
+                  dropDownValue = value!;
+                  print(dropDownValue);
+                });
+              },
+            ),
+            SizedBox(height: 20),
+            CustomButton(
+              text: 'Tambah', 
+              backgroundColor: Colors.blue, 
+              textColor: Colors.white, 
+              onPressed: () {
+                addTransaction(context);
+              }
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -152,7 +287,20 @@ class _TransactionScreenState extends State{
                       ),
                     ],
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Histori',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: tabungan!.length,
@@ -207,14 +355,16 @@ class _TransactionScreenState extends State{
         floatingActionButton: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 17.0, 17.0),
         child: FloatingActionButton(
+          foregroundColor: Colors.white,
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
           onPressed: () {
-            Navigator.pushNamed(
-              context,
-              '/addMember'
-            );
+            _showModalBottomSheet(context);
           },
           child: Icon(Icons.add),
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.blue[400],
         ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

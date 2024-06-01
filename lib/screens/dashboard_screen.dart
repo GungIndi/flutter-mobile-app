@@ -91,7 +91,7 @@ class _DashboardScreenState extends State{
 @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white70,
       appBar: AppBar(
         title: Text(
           'Anggota',
@@ -99,9 +99,9 @@ class _DashboardScreenState extends State{
         ),
         toolbarHeight: 75,
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
-        elevation: 0,
+        elevation: 10,
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -133,9 +133,12 @@ class _DashboardScreenState extends State{
                           ),
                           subtitle: 
                             Text(
-                              '${anggotaList![index].telepon}'
+                              '${anggotaList![index].telepon}',
+                              style: TextStyle(
+                                color: Colors.grey
+                              ),
                             ),
-                            subtitleTextStyle: TextStyle(color: Colors.grey[800]),
+                          subtitleTextStyle: TextStyle(color: Colors.grey[800]),
                           trailing: Wrap(
                             spacing: 10,
                             children: <Widget>[
@@ -208,7 +211,8 @@ class _DashboardScreenState extends State{
             );
           },
           child: Icon(Icons.add),
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.lightBlue,
+          foregroundColor: Colors.white,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
