@@ -90,6 +90,7 @@ class _TransactionScreenState extends State{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Tabungan',
@@ -115,13 +116,6 @@ class _TransactionScreenState extends State{
                 itemCount: tabungan!.length,
                 itemBuilder: (context, index) {
                   return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                      side: BorderSide(
-                        color: Colors.grey.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
                     child: Container(
                       decoration: BoxDecoration(color: Colors.white),
                       child: Padding(
@@ -137,9 +131,25 @@ class _TransactionScreenState extends State{
                           ),
                           subtitle: 
                             Text(
-                              '${tabungan![index]['trx_tanggal'].toString()}\n${tabungan![index]['trx_nominal'].toString()}'
-                            ),
+                              '${tabungan![index]['trx_tanggal'].toString()}'
+                            ),  
                             subtitleTextStyle: TextStyle(color: Colors.grey[800]),
+                          trailing: tabungan![index]['trx_id'] == 3
+                            ? Text(
+                                ' -${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600
+                                )
+                            ) : Text(
+                                  ' +${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600
+                                  )
+                            ),
                         ),
                       ),
                     ),

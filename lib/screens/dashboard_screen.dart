@@ -122,7 +122,7 @@ class _DashboardScreenState extends State{
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+          padding: const EdgeInsets.fromLTRB(5, 10, 5, 20),
           child: anggotaList != null
               ? ListView.builder(
                   itemCount: anggotaList!.length,
@@ -137,73 +137,70 @@ class _DashboardScreenState extends State{
                       ),
                       child: Container(
                         decoration: BoxDecoration(color: Colors.white),
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 5.0),
-                          child: ListTile(
-                            title: Text(
-                              anggotaList![index].nama,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
+                        child: ListTile(
+                          title: Text(
+                            anggotaList![index].nama,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
                             ),
-                            subtitle: 
-                              Text(
-                                '${anggotaList![index].telepon}\nSaldo: ${saldoDataMap['${anggotaList![index].id}']}'
-                              ),
-                              subtitleTextStyle: TextStyle(color: Colors.grey[800]),
-                            trailing: Wrap(
-                              spacing: 15,
-                              children: <Widget>[
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => TransactionScreen(id: anggotaList![index].id),
-                                      ),
-                                    );
-                                  },
-                                  child: Icon(Icons.attach_money_sharp)
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EditMemberScreen(id: anggotaList![index].id),
-                                      ),
-                                    );
-                                  },
-                                  child: Icon(Icons.edit)
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) => AlertDialog(
-                                        title: const Text('Are you sure?'),
-                                        content: const Text('you cannot restore this member'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(context, 'No'),
-                                            child: const Text('No'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () => deleteAnggota(context, anggotaList![index].id),
-                                            child: const Text('Yes'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  child: Icon(Icons.delete)
-                                ),
-                              ],
-                            ),
-                            
                           ),
+                          subtitle: 
+                            Text(
+                              '${anggotaList![index].telepon}\nSaldo: ${saldoDataMap['${anggotaList![index].id}']}'
+                            ),
+                            subtitleTextStyle: TextStyle(color: Colors.grey[800]),
+                          trailing: Wrap(
+                            spacing: 10,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TransactionScreen(id: anggotaList![index].id),
+                                    ),
+                                  );
+                                },
+                                child: Icon(Icons.attach_money_sharp)
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditMemberScreen(id: anggotaList![index].id),
+                                    ),
+                                  );
+                                },
+                                child: Icon(Icons.edit)
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) => AlertDialog(
+                                      title: const Text('Are you sure?'),
+                                      content: const Text('you cannot restore this member'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context, 'No'),
+                                          child: const Text('No'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () => deleteAnggota(context, anggotaList![index].id),
+                                          child: const Text('Yes'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                child: Icon(Icons.delete)
+                              ),
+                            ],
+                          ),
+                          
                         ),
                       ),
                     );
