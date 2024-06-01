@@ -19,6 +19,7 @@ class _TransactionScreenState extends State{
   final dio = Dio();
   final storage = GetStorage();
   List<Map<String, dynamic>>? tabungan;
+  dynamic saldoData;
 
   String dropDownValue = '1';
   var items = [
@@ -47,6 +48,7 @@ class _TransactionScreenState extends State{
 
   Future<void> fetchData(id) async {
     try {
+      // Fetch tabungan
       Response response = await Dio().get(
         "$apiUrl/tabungan/$id",
         options: Options(
@@ -57,8 +59,20 @@ class _TransactionScreenState extends State{
       if (response.data['success'] == true) {
         tabungan = List<Map<String, dynamic>>.from(response.data['data']['tabungan']);
         print('TABUNGAN: $tabungan');
-        setState(() {});
       }
+      // Fetch saldo
+      Response response2 = await Dio().get(
+        "$apiUrl/saldo/$id",
+        options: Options(
+          headers: {'Authorization': 'Bearer ${storage.read('token')}'},
+        )
+      );
+      print('Response 2: $response2');
+      if (response2.data['success'] == true) {
+        saldoData = response2.data['data']['saldo'];
+      }
+      setState(() {});
+
     } on DioException catch (error) {
       print('Error occurred: ${error.response}');
       String errorMessage = error.response!.data['message'];
@@ -109,56 +123,101 @@ class _TransactionScreenState extends State{
               valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
             ),
           )
-          : SafeArea(
-            child: Padding(
+          : Padding(
               padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
-              child: ListView.builder(
-                itemCount: tabungan!.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Container(
-                      decoration: BoxDecoration(color: Colors.white),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 5.0),
-                        child: ListTile(
-                          title: Text(
-                            getTransactionType(tabungan![index]['trx_id']),
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          subtitle: 
-                            Text(
-                              '${tabungan![index]['trx_tanggal'].toString()}'
-                            ),  
-                            subtitleTextStyle: TextStyle(color: Colors.grey[800]),
-                          trailing: tabungan![index]['trx_id'] == 3
-                            ? Text(
-                                ' -${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600
-                                )
-                            ) : Text(
-                                  ' +${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600
-                                  )
-                            ),
+              child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Total Saldo',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16
                         ),
                       ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${FormatCurrency.convertToIdr(saldoData, 2)}',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: tabungan!.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: Container(
+                            decoration: BoxDecoration(color: Colors.white),
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: ListTile(
+                                leading: tabungan![index]['trx_id'] == 3 ? Icon(Icons.money_off_csred) : Icon(Icons.payments_sharp),
+                                title: Text(
+                                  getTransactionType(tabungan![index]['trx_id']),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                subtitle: 
+                                  Text(
+                                    '${tabungan![index]['trx_tanggal'].toString()}'
+                                  ),  
+                                  subtitleTextStyle: TextStyle(color: Colors.grey[800]),
+                                trailing: tabungan![index]['trx_id'] == 3
+                                  ? Text(
+                                      ' -${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600
+                                      ))
+                                  : Text(
+                                      ' +${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600
+                                      )
+                                  ), 
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ],
               )
-            ),
           ),
         ),
+        floatingActionButton: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 17.0, 17.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              '/addMember'
+            );
+          },
+          child: Icon(Icons.add),
+          backgroundColor: Colors.white,
+        ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       );
   }
 }
