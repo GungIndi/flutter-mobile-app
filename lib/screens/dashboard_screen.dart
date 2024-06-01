@@ -94,7 +94,7 @@ class _DashboardScreenState extends State{
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          'List Anggota',
+          'Anggota',
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
         ),
         toolbarHeight: 75,
@@ -106,7 +106,7 @@ class _DashboardScreenState extends State{
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(6, 10, 6, 20),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
           child: anggotaList != null
               ? ListView.builder(
                   itemCount: anggotaList!.length,
