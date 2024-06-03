@@ -63,28 +63,36 @@ class _TransactionScreenState extends State{
           headers: {'Authorization' : 'Bearer ${storage.read('token')}'}
         )
       );
-      print(response.data);
       if (response.data['success'] == true) {
         Navigator.pop(context);
         fetchData(id);
       }
+      if(response.data['success'] ==  false){
+        String errorMessage = response.data['message'];
+        showDialog<String>(
+          context: context, 
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('An Error Occured!'),
+            content: Text('${errorMessage}'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'No'),
+                child: Text('Ok')
+              )
+            ],
+          )    
+        );     
+      }
     } on DioException catch (error){
-      print(error.response);
+      // print(error.response!.data['message']);
       String errorMessage = error.response!.data['message'].toString();
       print('asdjaldjlsa: $errorMessage');
-      if(errorMessage.contains('`Setoran Awal`')){
-        errorMessage = error.response!.data['message'];
-      }
       if (error.response != null && error.response!.data is Map<String, dynamic>) {
-        if (error.response!.data['message'] != null && error.response!.data['message'].contains('trx nominal field')) {
+        print('halooii');
+        if (error.response!.data['message'] != null && error.response!.data['message'].contains('trx nominal field is required')) {
           errorMessage = 'Nominal Field is Required';
-        }
-        if (error.response!.data['message'] != null && error.response!.data['message'].contains('Integrity constraint violation')) {
-          if(error.response!.data['message'].contains('Duplicate entry')){
-            errorMessage = 'Nomor Induk Already Registered!';
-          } else {
-            errorMessage = 'Please fill all the fields';
-          }
+        } else if (error.response!.data['message'].contains('must be a number')){
+          errorMessage = 'Nominal field must be a number!';
         }
         showDialog<String>(
           context: context, 
