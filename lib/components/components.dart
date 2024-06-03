@@ -363,3 +363,44 @@ class CustomModalBottomSheet extends StatelessWidget {
     );
   }
 }
+
+void showCustomSnackBar(BuildContext context, String message, {Color backgroundColor = Colors.black}) {
+  final snackBar = CustomSnackBar(
+    content: Text(message),
+    backgroundColor: backgroundColor,
+  );
+
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+class CustomSnackBar extends SnackBar {
+  CustomSnackBar({
+    Key? key,
+    required Widget content,
+    Color? backgroundColor,
+    double? elevation,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    double? width,
+    ShapeBorder? shape,
+    SnackBarBehavior? behavior,
+    SnackBarAction? action,
+    Duration duration = const Duration(seconds: 3),
+    Animation<double>? animation,
+    VoidCallback? onVisible,
+  }) : super(
+          key: key,
+          content: content,
+          backgroundColor: backgroundColor,
+          elevation: elevation,
+          margin: margin,
+          padding: padding,
+          width: width,
+          shape: shape,
+          behavior: behavior,
+          action: action,
+          duration: duration,
+          animation: animation,
+          onVisible: onVisible,
+        );
+}
