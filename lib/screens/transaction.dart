@@ -11,7 +11,7 @@ class TransactionScreen extends StatefulWidget {
   _TransactionScreenState createState() => _TransactionScreenState(id: id);
 }
 
-class _TransactionScreenState extends State{
+class _TransactionScreenState extends State<TransactionScreen> {
   final int id;
   _TransactionScreenState({required this.id});
 
@@ -23,12 +23,11 @@ class _TransactionScreenState extends State{
 
   String dropDownValue = '1';
   var items = {
-    '1' : 'Saldo awal',
-    '2' : 'Simpanan',
-    '3' : 'Penarikan',
-    // '4' : 'Bunga Simpanan',
-    '5' : 'Koreksi Penambahan',
-    '6' : 'Koreksi Pengurangan',
+    '1': 'Saldo awal',
+    '2': 'Simpanan',
+    '3': 'Penarikan',
+    '5': 'Koreksi Penambahan',
+    '6': 'Koreksi Pengurangan',
   };
 
   String getTransactionType(int trxId) {
@@ -49,165 +48,146 @@ class _TransactionScreenState extends State{
         return 'Unknown';
     }
   }
-
   void addTransaction(BuildContext context) async {
-    try{
+    try {
       final response = await dio.post(
         '$apiUrl/tabungan',
         data: {
-          "anggota_id" : id,
-          "trx_id" : dropDownValue,
-          "trx_nominal" : trxNominalController.text
+          "anggota_id": id,
+          "trx_id": dropDownValue,
+          "trx_nominal": trxNominalController.text
         },
         options: Options(
-          headers: {'Authorization' : 'Bearer ${storage.read('token')}'}
-        )
+            headers: {'Authorization': 'Bearer ${storage.read('token')}'}
+        ),
       );
       if (response.data['success'] == true) {
         Navigator.pop(context);
+        showCustomSnackBar(
+          context,
+          'Transaction add succesfully',
+          backgroundColor: Colors.green
+        );
         fetchData(id);
-      }
-      if(response.data['success'] ==  false){
+      } else {
         String errorMessage = response.data['message'];
-        showDialog<String>(
-          context: context, 
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('An Error Occured!'),
-            content: Text('${errorMessage}'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'No'),
-                child: Text('Ok')
-              )
-            ],
-          )    
-        );     
+        print(errorMessage);
+        Navigator.pop(context);
+        showCustomSnackBar(
+          context,
+          errorMessage,
+          backgroundColor: Colors.red
+        );
       }
-    } on DioException catch (error){
-      // print(error.response!.data['message']);
-      String errorMessage = error.response!.data['message'].toString();
-      print('asdjaldjlsa: $errorMessage');
+    } on DioException catch (error) {
+      String errorMessage = error.response?.data['message'].toString() ?? 'An unexpected error occurred';
       if (error.response != null && error.response!.data is Map<String, dynamic>) {
-        print('halooii');
         if (error.response!.data['message'] != null && error.response!.data['message'].contains('trx nominal field is required')) {
           errorMessage = 'Nominal Field is Required';
-        } else if (error.response!.data['message'].contains('must be a number')){
+        } else if (error.response!.data['message'].contains('must be a number')) {
           errorMessage = 'Nominal field must be a number!';
         }
-        showDialog<String>(
-          context: context, 
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('An Error Occured!'),
-            content: Text('${errorMessage}'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'No'),
-                child: Text('Ok')
-              )
-            ],
-          )    
-        );      
       }
+      showCustomSnackBar(
+        context,
+        errorMessage,
+        backgroundColor: Colors.red
+      );
     }
   }
 
   final TextEditingController trxNominalController = TextEditingController();
-  final TextEditingController trxIdController = TextEditingController();
 
-  Future<void> fetchData(id) async {
+  Future<void> fetchData(int id) async {
     try {
-      // Fetch tabungan
-      Response response = await Dio().get(
+      Response response = await dio.get(
         "$apiUrl/tabungan/$id",
         options: Options(
           headers: {'Authorization': 'Bearer ${storage.read('token')}'},
         ),
       );
-      print('Response: $response');
       if (response.data['success'] == true) {
-        tabungan = List<Map<String, dynamic>>.from(response.data['data']['tabungan']);
-        print('TABUNGAN: $tabungan');
+        setState(() {
+          tabungan = List<Map<String, dynamic>>.from(response.data['data']['tabungan']);
+        });
       }
-      // Fetch saldo
-      Response response2 = await Dio().get(
+      Response response2 = await dio.get(
         "$apiUrl/saldo/$id",
         options: Options(
           headers: {'Authorization': 'Bearer ${storage.read('token')}'},
-        )
+        ),
       );
-      print('Response 2: $response2');
       if (response2.data['success'] == true) {
-        saldoData = response2.data['data']['saldo'];
+        setState(() {
+          saldoData = response2.data['data']['saldo'];
+        });
       }
-      setState(() {});
-
     } on DioException catch (error) {
-      print('Error occurred: ${error.response}');
-      String errorMessage = error.response!.data['message'];
-      if (error.response!.data['message'] != null && error.response!.data['message'].contains('Token is Expired')) {
-         errorMessage = 'Your Session is Over';
+      String errorMessage = error.response?.data['message'] ?? 'An unexpected error occurred';
+      if (error.response?.data['message'] != null && error.response!.data['message'].contains('Token is Expired')) {
+        errorMessage = 'Your Session is Over';
       }
-
       showDialog<String>(
-        context: context, 
+        context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: Text('${errorMessage}'),
+          title: Text(errorMessage),
           content: Text('Please Login'),
           actions: <Widget>[
             TextButton(
-              onPressed: () =>  Navigator.pushReplacementNamed(context, '/login'),
-              child: Text('Ok')
+                onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+                child: Text('Ok')
             )
           ],
-        )    
+        ),
       );
     }
   }
+
   void _showModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return CustomModalBottomSheet(
-          content: [
+          content: [  
             Row(
-              mainAxisAlignment: MainAxisAlignment.center  ,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   'Tambah Transaksi',
                   style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600
                   ),
                 ),
               ],
             ),
             SizedBox(height: 25),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start  ,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   'Nominal',
                   style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600
                   ),
                 ),
               ],
             ),
             SizedBox(height: 10),
             CustomInputField(
-              hintText: 'Masukan Nominal', 
+              hintText: 'Masukan Nominal',
               controller: trxNominalController,
             ),
             SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start  ,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   'Jenis Transaksi',
                   style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600
                   ),
                 ),
               ],
@@ -216,21 +196,20 @@ class _TransactionScreenState extends State{
             CustomDropdown(
               value: '1',
               items: items,
-              onChanged: (String?  value) {
+              onChanged: (String? value) {
                 setState(() {
                   dropDownValue = value!;
-                  print(dropDownValue);
                 });
               },
             ),
             SizedBox(height: 20),
             CustomButton(
-              text: 'Tambah', 
-              backgroundColor: Colors.blue, 
-              textColor: Colors.white, 
-              onPressed: () {
-                addTransaction(context);
-              }
+                text: 'Tambah',
+                backgroundColor: Colors.blue,
+                textColor: Colors.white,
+                onPressed: () {
+                  addTransaction(context);
+                }
             )
           ],
         );
@@ -260,13 +239,14 @@ class _TransactionScreenState extends State{
         elevation: 0,
       ),
       body: SafeArea(
-        child: tabungan == null
-          ? Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-            ),
-          )
-          : Padding(
+        child: tabungan == null || saldoData == null
+            ? Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+        )
+            : SingleChildScrollView(
+          child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
               child: Column(
                 children: [
@@ -276,8 +256,8 @@ class _TransactionScreenState extends State{
                     children: [
                       Text('Total Saldo',
                         style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16
+                            color: Colors.grey,
+                            fontSize: 16
                         ),
                       ),
                     ],
@@ -288,9 +268,9 @@ class _TransactionScreenState extends State{
                       Text(
                         '${FormatCurrency.convertToIdr(saldoData, 2)}',
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold
+                            color: Colors.black,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold
                         ),
                       ),
                     ],
@@ -302,65 +282,61 @@ class _TransactionScreenState extends State{
                       Text(
                         'Histori',
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold
                         ),
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: tabungan!.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: Container(
-                            decoration: BoxDecoration(color: Colors.white),
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 5.0),
-                              child: ListTile(
-                                leading: tabungan![index]['trx_id'] == 3 ? Icon(Icons.money_off_csred) : Icon(Icons.payments_sharp),
-                                title: Text(
-                                  getTransactionType(tabungan![index]['trx_id']),
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: tabungan!.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: Container(
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 5.0),
+                            child: ListTile(
+                              leading: tabungan![index]['trx_id'] == 3 ? Icon(Icons.money_off_csred) : Icon(Icons.payments_sharp),
+                              title: Text(
+                                getTransactionType(tabungan![index]['trx_id']),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                subtitle: 
-                                  Text(
-                                    '${tabungan![index]['trx_tanggal'].toString()}'
-                                  ),  
-                                  subtitleTextStyle: TextStyle(color: Colors.grey[800]),
-                                trailing: tabungan![index]['trx_id'] == 3
-                                  ? Text(
-                                      ' -${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600
-                                      ))
-                                  : Text(
-                                      ' +${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
-                                      style: TextStyle(
-                                        color: Colors.green,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600
-                                      )
-                                  ), 
                               ),
+                              subtitle: Text('${tabungan![index]['trx_tanggal'].toString()}',
+                                  style: TextStyle(color: Colors.grey[800])),
+                              trailing: tabungan![index]['trx_id'] == 3
+                                  ? Text(
+                                  ' -${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600
+                                  ))
+                                  : Text(
+                                  ' +${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600
+                                  )),
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               )
           ),
         ),
-        floatingActionButton: Padding(
+      ),
+      floatingActionButton: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 17.0, 17.0),
         child: FloatingActionButton(
           foregroundColor: Colors.white,
@@ -374,8 +350,8 @@ class _TransactionScreenState extends State{
           child: Icon(Icons.add),
           backgroundColor: Colors.blue[400],
         ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      );
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 }
