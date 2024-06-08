@@ -76,6 +76,11 @@ class _DashboardScreenState extends State{
     print(response.data);
     if (response.data['success'] == true) {
       Navigator.pushReplacementNamed(context, '/buttom');
+      showCustomSnackBar(
+        context,
+        'Member succesfully deleted',
+        backgroundColor: Colors.green
+      );
     }
   } on DioException catch (error) {
     print('Error occurred: ${error.response}');

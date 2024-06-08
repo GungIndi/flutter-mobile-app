@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:logger/logger.dart';
 import 'package:project_1/components/components.dart';
+
 
 class AddMemberScreen extends StatefulWidget {
   AddMemberScreen({Key? key}) : super(key: key);
@@ -39,6 +41,11 @@ class _AddMemberScreenState extends State{
       print(response.data);
       if (response.data['success'] == true) {
         Navigator.pushReplacementNamed(context, '/buttom');
+        showCustomSnackBar(
+          context,
+          'Member add succesfully',
+          backgroundColor: Colors.green
+        );
       }
     } on DioException catch (error) {
       print('Error occurred: ${error.response}');
@@ -57,19 +64,11 @@ class _AddMemberScreenState extends State{
             errorMessage = 'Please fill all the fields';
           }
         }
-        showDialog<String>(
-          context: context, 
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('An Error Occured!'),
-            content: Text('${errorMessage}'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'No'),
-                child: Text('Ok')
-              )
-            ],
-          )    
-        );      
+        showCustomSnackBar(
+          context,
+          errorMessage,
+          backgroundColor: Colors.red
+        );     
       }
     }
   }
