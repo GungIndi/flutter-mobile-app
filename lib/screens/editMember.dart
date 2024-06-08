@@ -89,6 +89,11 @@ class _EditMemberScreenState extends State{
       if (response.data['success'] == true) {
         setState(() {});
         Navigator.pushReplacementNamed(context, '/buttom');
+        showCustomSnackBar(
+          context,
+          'Member edited succesfully',
+          backgroundColor: Colors.green
+        );
       }
     } on DioException catch (error) {
       print('Error occurred: ${error.response}');
@@ -105,18 +110,10 @@ class _EditMemberScreenState extends State{
         if (error.response!.data['message'] != null && error.response!.data['message'].contains('Integrity constraint violation')) {
           errorMessage = 'Nomor Induk Already Registered!';
         }
-        showDialog<String>(
-          context: context, 
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('An Error Occured!'),
-            content: Text('${errorMessage}'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'No'),
-                child: Text('Ok')
-              )
-            ],
-          )    
+        showCustomSnackBar(
+          context,
+          errorMessage,
+          backgroundColor: Colors.red
         );
       }
     }
