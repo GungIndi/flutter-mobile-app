@@ -30,7 +30,7 @@ class _DashboardScreenState extends State{
       );
       print('Response: $response');
       if (response.data['success'] == true) {
-        DataMember memberList = DataMember.fromJson(response.data);
+        MemberData memberList = MemberData.fromJson(response.data);
         setState(() {
           this.memberList = memberList.data;
         });

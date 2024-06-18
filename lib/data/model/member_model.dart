@@ -1,9 +1,9 @@
-class DataMember {
+class MemberData {
   final List<Member> data;
-  DataMember({required this.data});
+  MemberData({required this.data});
 
-  factory DataMember.fromJson(Map<String, dynamic> memberJson) =>
-      DataMember(
+  factory MemberData.fromJson(Map<String, dynamic> memberJson) =>
+      MemberData(
         data: List<Member>.from(
           memberJson["data"]["anggotas"].map(
             (member) => Member.fromJson(member),
