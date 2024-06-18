@@ -152,42 +152,6 @@ class UserProfileData extends StatelessWidget {
   }
 }
 
-
-class Anggota {
-  final int id;
-  final int nomorInduk;
-  final String nama;
-  final String alamat;
-  final String tglLahir;
-  final String telepon;
-  final String imageUrl;
-  final int statusAktif;
-
-  Anggota({
-    required this.id,
-    required this.nomorInduk,
-    required this.nama,
-    required this.alamat,
-    required this.tglLahir,
-    required this.telepon,
-    required this.imageUrl,
-    required this.statusAktif,
-  });
-
-  factory Anggota.fromJson(Map<String, dynamic> json) {
-    return Anggota(
-      id: json['id'],
-      nomorInduk: json['nomor_induk'],
-      nama: json['nama'],
-      alamat: json['alamat'],
-      tglLahir: json['tgl_lahir'],
-      telepon: json['telepon'],
-      imageUrl: json['image_url'] ?? '',
-      statusAktif: json['status_aktif'],
-    );
-  }
-}
-
 class ShowDialog{
   final String text;
   final VoidCallback onPressedYes;

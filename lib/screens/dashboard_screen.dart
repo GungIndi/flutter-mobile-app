@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
+import 'package:project_1/data/model/user_model.dart';
 import 'package:project_1/screens/editMember.dart';
 import 'package:project_1/screens/transaction.dart';
 
@@ -17,7 +18,7 @@ class _DashboardScreenState extends State{
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final dio = Dio();
   final storage = GetStorage();
-  List<Anggota>? anggotaList; 
+  List<Member>? anggotaList; 
   Map<String, dynamic> saldoDataMap = {};
 
   Future<void> fetchData() async {
@@ -30,10 +31,9 @@ class _DashboardScreenState extends State{
       );
       print('Response: $response');
       if (response.data['success'] == true) {
-        List<dynamic> anggotaData = response.data['data']['anggotas'];
-        anggotaList = anggotaData.map((data) => Anggota.fromJson(data)).toList();
+        DataMember anggotaList = DataMember.fromJson(response.data);
         setState(() {
-          this.anggotaList = anggotaList;
+          this.anggotaList = anggotaList.data;
           this.saldoDataMap = saldoDataMap;
         });
       }
