@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_1/bloc/bottom_bar_bloc.dart';
+import 'package:project_1/bloc/bottomBar/bottom_bar_bloc.dart';
 import 'package:project_1/screens/dashboard_screen.dart';
 import 'package:project_1/screens/profile.dart';
 
