@@ -19,7 +19,6 @@ class _DashboardScreenState extends State{
   final dio = Dio();
   final storage = GetStorage();
   List<Member>? memberList; 
-  Map<String, dynamic> saldoDataMap = {};
 
   Future<void> fetchData() async {
     try {
@@ -34,7 +33,6 @@ class _DashboardScreenState extends State{
         DataMember memberList = DataMember.fromJson(response.data);
         setState(() {
           this.memberList = memberList.data;
-          this.saldoDataMap = saldoDataMap;
         });
       }
       
