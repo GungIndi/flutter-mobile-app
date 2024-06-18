@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
+import 'package:project_1/data/model/transaction_model.dart';
 
 class TransactionScreen extends StatefulWidget {
   final int id;
@@ -18,7 +19,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final dio = Dio();
   final storage = GetStorage();
-  List<Map<String, dynamic>>? tabungan;
+  List<Transaction>? tabungan;
   dynamic saldoData;
 
   String dropDownValue = '1';
@@ -106,9 +107,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
           headers: {'Authorization': 'Bearer ${storage.read('token')}'},
         ),
       );
+      print(response.data);
       if (response.data['success'] == true) {
+        TransactionData tabungan = TransactionData.fromJson(response.data);
         setState(() {
-          tabungan = List<Map<String, dynamic>>.from(response.data['data']['tabungan']);
+          this.tabungan = tabungan.data;
         });
       }
       Response response2 = await dio.get(
@@ -121,6 +124,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
         setState(() {
           saldoData = response2.data['data']['saldo'];
         });
+        print(response2.data);
       }
     } on DioException catch (error) {
       String errorMessage = error.response?.data['message'] ?? 'An unexpected error occurred';
@@ -299,27 +303,27 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 5.0),
                             child: ListTile(
-                              leading: tabungan![index]['trx_id'] == 3 ? Icon(Icons.money_off_csred) : Icon(Icons.payments_sharp),
+                              leading: tabungan![index].id == 3 ? Icon(Icons.money_off_csred) : Icon(Icons.payments_sharp),
                               title: Text(
-                                getTransactionType(tabungan![index]['trx_id']),
+                                getTransactionType(tabungan![index].transactionId),
                                 style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              subtitle: Text('${tabungan![index]['trx_tanggal'].toString()}',
+                              subtitle: Text('${tabungan![index].date.toString()}',
                                   style: TextStyle(color: Colors.grey[800])),
-                              trailing: tabungan![index]['trx_id'] == 3
+                              trailing: tabungan![index].transactionId == 3
                                   ? Text(
-                                  ' -${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
+                                  ' -${FormatCurrency.convertToIdr(tabungan![index].transactionNominal, 0)}',
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600
                                   ))
                                   : Text(
-                                  ' +${FormatCurrency.convertToIdr(tabungan![index]['trx_nominal'], 0)}',
+                                  ' +${FormatCurrency.convertToIdr(tabungan![index].transactionNominal, 0)}',
                                   style: TextStyle(
                                       color: Colors.green,
                                       fontSize: 14,
