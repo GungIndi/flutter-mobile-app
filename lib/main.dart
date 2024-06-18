@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:project_1/provider/bottomNavigationBarProvider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_1/bloc/bottom_bar_bloc.dart';
+import 'package:project_1/components/bottomNavigationBar.dart';
 import 'package:project_1/screens/addMember.dart';
 import 'package:project_1/screens/home_screen.dart';
 import 'package:project_1/screens/login_screen.dart';
 import 'package:project_1/screens/profile.dart';
-import 'package:project_1/provider/provider.dart';
 import 'package:project_1/screens/signup_screen.dart';
 import 'package:project_1/screens/dashboard_screen.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:project_1/screens/transaction.dart';
-import 'package:provider/provider.dart';
 
 Future<void> main() async {
   await GetStorage.init();
@@ -20,7 +19,12 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<BottomBarBloc>(
+          create: (context) => BottomBarBloc(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter App',
         debugShowCheckedModeBanner: false,
@@ -34,14 +38,11 @@ class MyApp extends StatelessWidget {
           '/register': (context) => SignUpScreen(),
           '/dashboard': (context) => DashboardScreen(),
           '/profile': (context) => ProfileScreen(),
-          '/buttom': (context) => ButtomNavigationProviderScreen(),
+          '/landingPage': (context) => LandingPage(),
           '/addMember': (context) => AddMemberScreen(),
         },
         initialRoute: '/',
       ),
-      providers: [
-        ChangeNotifierProvider(create: (context) => ButtonNavigationBarProvider())
-      ],
     );
   }
 }
