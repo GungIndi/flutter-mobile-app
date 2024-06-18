@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
+import 'package:project_1/data/model/user_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class _ProfileScreenState extends State{
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final dio = Dio();
   final storage = GetStorage();
-  Map<String, dynamic>? user;
+  User? user;
 
   Future<void> getUserData() async {
   try {
@@ -27,10 +28,11 @@ class _ProfileScreenState extends State{
     print('Response: $response');
 
     if (response.data['success'] == true) {
-      Map<String, dynamic> data = response.data;
-      user = data['data']['user'];
-      print('User: $user');
-      setState(() {});
+      User userData = User.fromModel(response.data['data']['user']);
+      setState(() {
+        user = userData;
+      });
+      print("SUCCESSS");
     }
   } on DioException catch (error) {
     print('Error occurred: ${error.response}');
@@ -99,12 +101,12 @@ class _ProfileScreenState extends State{
                     SizedBox(height: 20),
                     UserProfileData(
                       title: 'Name', 
-                      value: user!['name'], 
+                      value: user!.name, 
                       onPressed: (){},
                     ),
                     UserProfileData(
                       title: 'Email', 
-                      value: user!['email'], 
+                      value: user!.email, 
                       onPressed: (){},
                     ),
                     SizedBox(height: 70),

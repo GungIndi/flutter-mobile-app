@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
-import 'package:project_1/data/model/user_model.dart';
+import 'package:project_1/data/model/member_model.dart';
 import 'package:project_1/screens/editMember.dart';
 import 'package:project_1/screens/transaction.dart';
 
@@ -18,7 +18,7 @@ class _DashboardScreenState extends State{
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final dio = Dio();
   final storage = GetStorage();
-  List<Member>? anggotaList; 
+  List<Member>? memberList; 
   Map<String, dynamic> saldoDataMap = {};
 
   Future<void> fetchData() async {
@@ -31,9 +31,9 @@ class _DashboardScreenState extends State{
       );
       print('Response: $response');
       if (response.data['success'] == true) {
-        DataMember anggotaList = DataMember.fromJson(response.data);
+        DataMember memberList = DataMember.fromJson(response.data);
         setState(() {
-          this.anggotaList = anggotaList.data;
+          this.memberList = memberList.data;
           this.saldoDataMap = saldoDataMap;
         });
       }
@@ -112,9 +112,9 @@ class _DashboardScreenState extends State{
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
-          child: anggotaList != null
+          child: memberList != null
               ? ListView.builder(
-                  itemCount: anggotaList!.length,
+                  itemCount: memberList!.length,
                   itemBuilder: (context, index) {
                     return Card(
                       shape: RoundedRectangleBorder(
@@ -129,7 +129,7 @@ class _DashboardScreenState extends State{
                         child: ListTile(
                           minVerticalPadding: 13,
                           title: Text(
-                            anggotaList![index].nama,
+                            memberList![index].nama,
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.black,
@@ -138,7 +138,7 @@ class _DashboardScreenState extends State{
                           ),
                           subtitle: 
                             Text(
-                              '${anggotaList![index].telepon}',
+                              '${memberList![index].telepon}',
                               style: TextStyle(
                                 color: Colors.grey
                               ),
@@ -152,7 +152,7 @@ class _DashboardScreenState extends State{
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => TransactionScreen(id: anggotaList![index].id),
+                                      builder: (context) => TransactionScreen(id: memberList![index].id),
                                     ),
                                   );
                                 },
@@ -163,7 +163,7 @@ class _DashboardScreenState extends State{
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => EditMemberScreen(id: anggotaList![index].id),
+                                      builder: (context) => EditMemberScreen(id: memberList![index].id),
                                     ),
                                   );
                                 },
@@ -182,7 +182,7 @@ class _DashboardScreenState extends State{
                                           child: const Text('No'),
                                         ),
                                         TextButton(
-                                          onPressed: () => deleteAnggota(context, anggotaList![index].id),
+                                          onPressed: () => deleteAnggota(context, memberList![index].id),
                                           child: const Text('Yes'),
                                         ),
                                       ],

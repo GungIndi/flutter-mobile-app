@@ -1,48 +1,19 @@
-class DataMember {
-  final List<Member> data;
-  DataMember({required this.data});
-
-  factory DataMember.fromJson(Map<String, dynamic> memberJson) =>
-    DataMember(
-      data: List.from(
-        memberJson["data"]["anggotas"].map(
-          (member) => Member.fromModel(member),
-        ),
-      ),
-    );
-}
-
-class Member {
+class User {
   final int id;
-  final int nomorInduk;
-  final String nama;
-  final String alamat;
-  final String tglLahir;
-  final String telepon;
-  final String imageUrl;
-  final int statusAktif;
+  final String name;
+  final String email;
 
-  Member({
+  User({
     required this.id,
-    required this.nomorInduk,
-    required this.nama,
-    required this.alamat,
-    required this.tglLahir,
-    required this.telepon,
-    required this.imageUrl,
-    required this.statusAktif,
+    required this.name,
+    required this.email,
   });
 
-  factory Member.fromModel(Map<String, dynamic> json) {
-    return Member(
+  factory User.fromModel(Map<String, dynamic> json) {
+    return User(
       id: json['id'],
-      nomorInduk: json['nomor_induk'],
-      nama: json['nama'],
-      alamat: json['alamat'],
-      tglLahir: json['tgl_lahir'],
-      telepon: json['telepon'],
-      imageUrl: json['image_url'] ?? '',
-      statusAktif: json['status_aktif'],
+      name: json['name'],
+      email: json['email'],
     );
   }
 }
