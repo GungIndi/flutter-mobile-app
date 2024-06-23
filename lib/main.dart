@@ -6,7 +6,7 @@ import 'package:project_1/screens/addMember.dart';
 import 'package:project_1/screens/home_screen.dart';
 import 'package:project_1/screens/login_screen.dart';
 import 'package:project_1/screens/profile.dart';
-import 'package:project_1/screens/signup_screen.dart';
+import 'package:project_1/screens/register_screen.dart';
 import 'package:project_1/screens/dashboard_screen.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => HomeScreen(),
           '/login': (context) => LoginScreen(),
-          '/register': (context) => SignUpScreen(),
+          '/register': (context) => RegisterScreen(),
           '/dashboard': (context) => DashboardScreen(),
           '/profile': (context) => ProfileScreen(),
           '/landingPage': (context) => LandingPage(),
