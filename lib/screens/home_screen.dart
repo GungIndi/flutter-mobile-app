@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                           height: 10,
                         ),
                         CustomButton(
-                          text: 'Sign Up', 
+                          text: 'Register', 
                           backgroundColor: Colors.white, 
                           textColor: Colors.blue, 
                           borderColor: Colors.blue,
