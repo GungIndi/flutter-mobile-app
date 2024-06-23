@@ -1,10 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:project_1/components/components.dart';
 import 'package:project_1/data/model/member_model.dart';
+import 'package:project_1/data/services/member_service.dart';
 import 'package:project_1/screens/editMember.dart';
 import 'package:project_1/screens/transaction.dart';
+import 'package:project_1/utils/utils.dart';
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key? key}) : super(key: key);
@@ -14,106 +13,35 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final apiUrl = 'https://mobileapis.manpits.xyz/api';
-  final dio = Dio();
-  final storage = GetStorage();
+  final MemberService memberService = MemberService();
   List<Member>? memberList;
-
-  String mapMemberStatus(int trxId) {
-    switch (trxId) {
-      case 1:
-        return 'Aktif';
-      case 2:
-        return 'Tidak Aktif';
-      default:
-        return 'Unknown';
-    }
-  }
-
-  Future<void> fetchData() async {
-    try {
-      Response response = await dio.get(
-        "$apiUrl/anggota",
-        options: Options(
-          headers: {'Authorization': 'Bearer ${storage.read('token')}'},
-        ),
-      );
-      print('Response: $response');
-      if (response.data['success'] == true) {
-        MemberData memberData = MemberData.fromJson(response.data);
-        print('object : ${memberData.data[1]}');
-        setState(() {
-          this.memberList = memberData.data;
-        });
-      }
-    } on DioException catch (error) {
-      print('Error occurred: ${error.response}');
-      String errorMessage = error.response!.data['message'];
-      if (error.response!.data['message'] != null &&
-          error.response!.data['message'].contains('Token is Expired')) {
-        errorMessage = 'Your Session is Over';
-      }
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text('${errorMessage}'),
-          content: Text('Please Login'),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () =>
-                    Navigator.pushReplacementNamed(context, '/login'),
-                child: Text('Ok'))
-          ],
-        ),
-      );
-    }
-  }
-
-  void deleteAnggota(context, int id) async {
-    final dio = Dio();
-    final apiUrl = 'https://mobileapis.manpits.xyz/api';
-    final storage = GetStorage();
-
-    try {
-      final response = await dio.delete(
-        "$apiUrl/anggota/$id",
-        options: Options(
-          headers: {'Authorization': 'Bearer ${storage.read('token')}'},
-        ),
-      );
-      print(response.data);
-      if (response.data['success'] == true) {
-        setState((){
-          memberList = memberList?.where((member) => member.id != id).toList();
-        });
-        Navigator.pop(context);
-        showCustomSnackBar(
-          context,
-          'Member successfully deleted',
-          backgroundColor: Colors.green,
-        );
-      }
-    } on DioException catch (error) {
-      print('Error occurred: ${error.response}');
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to delete member'),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Ok')),
-          ],
-        ),
-      );
-    }
-  }
 
   @override
   void initState() {
     super.initState();
     fetchData();
+  }
+
+  Future<void> fetchData() async {
+    try {
+      List<Member> members = await memberService.fetchMembers(context);
+      setState(() {
+        this.memberList = members;
+      });
+    } catch (error) {
+      print('Error fetching members: $error');
+    }
+  }
+
+  void deleteMember(BuildContext context, int id) async {
+    try {
+      await memberService.deleteMember(context, id);
+      setState(() {
+        memberList = memberList?.where((member) => member.id != id).toList();
+      });
+    } catch (error) {
+      print('Error deleting member: $error');
+    }
   }
 
   @override
@@ -168,19 +96,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ),
                               SizedBox(height: 5),
                               Text(
-                                mapMemberStatus(
-                                    memberList![index].statusAktif),
+                                mapMemberStatus(memberList![index].statusAktif),
                                 style: TextStyle(
-                                    color: memberList![index].statusAktif == 1
-                                        ? Colors.green
-                                        : Colors.red,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                                  color: memberList![index].statusAktif == 1 ? Colors.green : Colors.red,
+                                  fontWeight: FontWeight.bold
+                                ),
                               )
                             ],
                           ),
-                          subtitleTextStyle:
-                              TextStyle(color: Colors.grey[800]),
+                          subtitleTextStyle: TextStyle(color: Colors.grey[800]),
                           trailing: Wrap(
                             spacing: 10,
                             children: <Widget>[
@@ -215,17 +139,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       builder: (BuildContext context) =>
                                           AlertDialog(
                                         title: const Text('Are you sure?'),
-                                        content: const Text(
-                                            'You cannot restore this member'),
+                                        content: const Text('You cannot restore this member'),
                                         actions: <Widget>[
                                           TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, 'No'),
+                                            onPressed: () => Navigator.pop(context, 'No'),
                                             child: const Text('No'),
                                           ),
                                           TextButton(
-                                            onPressed: () => deleteAnggota(
-                                                context, memberList![index].id),
+                                            onPressed: () => deleteMember(context, memberList![index].id),
                                             child: const Text('Yes'),
                                           ),
                                         ],
@@ -260,24 +181,5 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
-  }
-}
-
-void logout(context) async {
-  final dio = Dio();
-  final apiUrl = 'https://mobileapis.manpits.xyz/api';
-  final storage = GetStorage();
-  try {
-    final response = await dio.get("$apiUrl/logout",
-        options: Options(
-            headers: {'Authorization': 'Bearer ${storage.read('token')}'}));
-    print(response.data);
-    storage.remove('token');
-
-    if (response.data['success'] == true) {
-      Navigator.pushNamed(context, '/login');
-    }
-  } on DioException catch (e) {
-    print(e.response);
   }
 }
