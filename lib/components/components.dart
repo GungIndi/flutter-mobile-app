@@ -152,26 +152,39 @@ class UserProfileData extends StatelessWidget {
   }
 }
 
-class ShowDialog{
+class CustomShowDialog {
   final String text;
+  final String? yesText;
+  final String? noText;
   final VoidCallback onPressedYes;
   final VoidCallback onPressedNo;
 
-  const ShowDialog({
+  CustomShowDialog({
     required this.text,
     required this.onPressedYes,
-    required this.onPressedNo
+    required this.onPressedNo,
+    this.noText,
+    this.yesText
   });
 
-  Future<String?> build(BuildContext context){
-    return showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('AlertDialog Title'),
-          content: const Text('AlertDialog description'),
-          actions: <Widget>[],
-        ),
-      );
+  Future<void> show(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Confirmation'),
+        content: Text(text),
+        actions: <Widget>[
+          TextButton(
+            onPressed: onPressedNo,
+            child: Text(noText!)
+          ),
+          TextButton(
+            onPressed: onPressedYes,
+            child: Text(yesText!)
+          ),
+        ],
+      ),
+    );
   }
 }
 
