@@ -36,17 +36,17 @@ class MemberService {
         errorMessage = 'Your Session is Over';
       }
       showDialog<String>(
-        context: context,
+        context: context, 
         builder: (BuildContext context) => AlertDialog(
-          title: Text('Error'),
-          content: Text(errorMessage),
+          title: Text('${errorMessage}'),
+          content: Text('Please Login'),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Ok'),
-            ),
+              onPressed: () =>  Navigator.pushReplacementNamed(context, '/login'),
+              child: Text('Ok')
+            )
           ],
-        ),
+        )    
       );
       return [];
     }
