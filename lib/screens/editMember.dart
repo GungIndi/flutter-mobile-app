@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
+import 'package:project_1/data/model/member_model.dart';
 
 class EditMemberScreen extends StatefulWidget {
   final int id;
@@ -18,7 +19,7 @@ class _EditMemberScreenState extends State{
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final dio = Dio();
   final storage = GetStorage();
-  Map<String, dynamic>? anggota;
+  Member? member;
 
   String dropDownValue = '1';
   var items = {
@@ -42,10 +43,12 @@ class _EditMemberScreenState extends State{
       );
       print('Response: $response');
       if (response.data['success'] == true) {
-        Map<String, dynamic> data = response.data;
-        anggota = data['data']['anggota'];
-        print('Anggota: $anggota');
-        setState(() {});
+        Member memberData = Member.fromModel(response.data['data']['anggota']);
+        print('Anggota: $memberData');
+        setState(() {
+          member = memberData;
+          dropDownValue = member!.statusAktif.toString();
+        });
       }
     } on DioException catch (error) {
       print('Error occurred: ${error.response}');
@@ -69,16 +72,16 @@ class _EditMemberScreenState extends State{
     }
   }
 
-  void editMember(BuildContext context, id) async {
+  void editMember(BuildContext context,int id) async {
     try {
       final response = await dio.put(
         "$apiUrl/anggota/$id",
         data: {
-          "nomor_induk": nomorIndukController.text.isNotEmpty ? nomorIndukController.text : anggota!['nomor_induk'],
-          "nama": namaController.text.isNotEmpty ? namaController.text : anggota!['nama'],
-          "alamat": alamatController.text.isNotEmpty ? alamatController.text : anggota!['alamat'],
-          "tgl_lahir": tglLahirController.text.isNotEmpty ? tglLahirController.text : anggota!['tgl_lahir'],
-          "telepon": teleponController.text.isNotEmpty ? teleponController.text : anggota!['telepon'],
+          "nomor_induk": nomorIndukController.text.isNotEmpty ? nomorIndukController.text : member!.nomorInduk,
+          "nama": namaController.text.isNotEmpty ? namaController.text : member!.nama,
+          "alamat": alamatController.text.isNotEmpty ? alamatController.text : member!.alamat,
+          "tgl_lahir": tglLahirController.text.isNotEmpty ? tglLahirController.text : member!.tglLahir,
+          "telepon": teleponController.text.isNotEmpty ? teleponController.text : member!.telepon,
           "status_aktif": dropDownValue,
         },
         options: Options(
@@ -87,8 +90,7 @@ class _EditMemberScreenState extends State{
       );
       print(response.data);
       if (response.data['success'] == true) {
-        setState(() {});
-        Navigator.pushReplacementNamed(context, '/buttom');
+        Navigator.pushReplacementNamed(context, '/landingPage');
         showCustomSnackBar(
           context,
           'Member edited succesfully',
@@ -154,7 +156,7 @@ class _EditMemberScreenState extends State{
         elevation: 0,
       ),
       body: SafeArea(
-        child: anggota == null
+        child: member == null
           ? Center(
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
@@ -170,25 +172,25 @@ class _EditMemberScreenState extends State{
                     SizedBox(height: 15),
                     FieldHeader(text: 'Nomor Induk'),
                     CustomInputField(
-                      hintText: anggota!['nomor_induk'].toString(), 
+                      hintText: member!.nomorInduk.toString(), 
                       controller: nomorIndukController,
                     ),
                     SizedBox(height: 15),
                     FieldHeader(text: 'Nama'),
                     CustomInputField(
-                      hintText: anggota!['nama'].toString(), 
+                      hintText: member!.nama.toString(), 
                       controller: namaController,
                     ),
                     SizedBox(height: 15),
                     FieldHeader(text: 'Alamat'),
                     CustomInputField(
-                      hintText: anggota!['alamat'].toString(), 
+                      hintText: member!.alamat.toString(), 
                       controller: alamatController,
                     ),
                     SizedBox(height: 15),
                     FieldHeader(text: 'Tanggal Lahir'),
                     CustomInputField(
-                      hintText: anggota!['tgl_lahir'].toString(),
+                      hintText: member!.tglLahir.toString(),
                       controller: tglLahirController,
                       readOnly: true,
                       prefixIcon: Icon(Icons.calendar_today),
@@ -197,13 +199,13 @@ class _EditMemberScreenState extends State{
                     SizedBox(height: 15),
                     FieldHeader(text: 'Telepon'),
                     CustomInputField(
-                      hintText: anggota!['telepon'].toString(), 
+                      hintText: member!.telepon.toString(), 
                       controller: teleponController,
                     ),
                     SizedBox(height: 15),
                     FieldHeader(text: 'Status'),
                     CustomDropdown(
-                      value: anggota!['status_aktif'].toString(), 
+                      value: member!.statusAktif.toString(), 
                       items: items, 
                       onChanged: (String? newValue) {
                         setState(() {

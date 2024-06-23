@@ -40,10 +40,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       );
       print('Response: $response');
       if (response.data['success'] == true) {
-        MemberData memberList = MemberData.fromJson(response.data);
-        print('object : ${memberList.data[1]}');
+        MemberData memberData = MemberData.fromJson(response.data);
+        print('object : ${memberData.data[1]}');
         setState(() {
-          this.memberList = memberList.data;
+          this.memberList = memberData.data;
         });
       }
     } on DioException catch (error) {
@@ -83,7 +83,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       );
       print(response.data);
       if (response.data['success'] == true) {
-        setState(() {
+        setState((){
           memberList = memberList?.where((member) => member.id != id).toList();
         });
         Navigator.pop(context);
