@@ -6,7 +6,7 @@ class MemberData {
       MemberData(
         data: List<Member>.from(
           memberJson["data"]["anggotas"].map(
-            (member) => Member.fromJson(member),
+            (member) => Member.fromModel(member),
           ),
         ),
       );
@@ -33,7 +33,7 @@ class Member {
     required this.statusAktif,
   });
 
-  factory Member.fromJson(Map<String, dynamic> json) {
+  factory Member.fromModel(Map<String, dynamic> json) {
     return Member(
       id: json['id'],
       nomorInduk: json['nomor_induk'],
