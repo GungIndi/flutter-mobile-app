@@ -39,7 +39,7 @@ class _AddMemberScreenState extends State{
       );
       print(response.data);
       if (response.data['success'] == true) {
-        Navigator.pushReplacementNamed(context, '/buttom');
+        Navigator.pushReplacementNamed(context, '/landingPage');
         showCustomSnackBar(
           context,
           'Member add succesfully',
@@ -68,6 +68,12 @@ class _AddMemberScreenState extends State{
           errorMessage,
           backgroundColor: Colors.red
         );     
+      } else {
+        showCustomSnackBar(
+          context,
+          'Failed to add member. Please try again.',
+          backgroundColor: Colors.red,
+        );
       }
     }
   }
