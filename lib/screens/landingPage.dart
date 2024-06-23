@@ -10,7 +10,7 @@ List<BottomNavigationBarItem> bottomNavItems = const <BottomNavigationBarItem>[
     label: 'Member',
   ),
   BottomNavigationBarItem(
-    icon: Icon(Icons.person),
+    icon: Icon(Icons.person_outlined),
     label: 'Profile',
   )
 ];
