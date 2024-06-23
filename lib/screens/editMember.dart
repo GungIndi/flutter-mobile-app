@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:project_1/components/components.dart';
 import 'package:project_1/data/model/member_model.dart';
+import 'package:project_1/data/services/member_service.dart';
+import 'package:project_1/utils/utils.dart';
 
 class EditMemberScreen extends StatefulWidget {
   final int id;
@@ -15,11 +15,14 @@ class EditMemberScreen extends StatefulWidget {
 class _EditMemberScreenState extends State{
   final int id;
   _EditMemberScreenState({required this.id});
-
-  final apiUrl = 'https://mobileapis.manpits.xyz/api';
-  final dio = Dio();
-  final storage = GetStorage();
   Member? member;
+
+  final TextEditingController nomorIndukController = TextEditingController();
+  final TextEditingController namaController = TextEditingController();
+  final TextEditingController alamatController = TextEditingController();
+  final TextEditingController tglLahirController = TextEditingController();
+  final TextEditingController teleponController = TextEditingController();
+  final MemberService memberService = MemberService();
 
   String dropDownValue = '1';
   var items = {
@@ -27,113 +30,25 @@ class _EditMemberScreenState extends State{
     '2' : 'Tidak Aktif',
   };
 
-  final TextEditingController nomorIndukController = TextEditingController();
-  final TextEditingController namaController = TextEditingController();
-  final TextEditingController alamatController = TextEditingController();
-  final TextEditingController tglLahirController = TextEditingController();
-  final TextEditingController teleponController = TextEditingController();
-
   Future<void> fetchData(id) async {
     try {
-      Response response = await Dio().get(
-        "$apiUrl/anggota/$id",
-        options: Options(
-          headers: {'Authorization': 'Bearer ${storage.read('token')}'},
-        ),
-      );
-      print('Response: $response');
-      if (response.data['success'] == true) {
-        Member memberData = Member.fromModel(response.data['data']['anggota']);
-        print('Anggota: $memberData');
-        setState(() {
-          member = memberData;
-          dropDownValue = member!.statusAktif.toString();
-        });
-      }
-    } on DioException catch (error) {
-      print('Error occurred: ${error.response}');
-      String errorMessage = error.response!.data['message'];
-      if (error.response!.data['message'] != null && error.response!.data['message'].contains('Token is Expired')) {
-         errorMessage = 'Your Session is Over';
-      }
-      showDialog<String>(
-        context: context, 
-        builder: (BuildContext context) => AlertDialog(
-          title: Text('${errorMessage}'),
-          content: Text('Please Login'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () =>  Navigator.pushReplacementNamed(context, '/login'),
-              child: Text('Ok')
-            )
-          ],
-        )    
-      );
-    }
-  }
-
-  void editMember(BuildContext context,int id) async {
-    try {
-      final response = await dio.put(
-        "$apiUrl/anggota/$id",
-        data: {
-          "nomor_induk": nomorIndukController.text.isNotEmpty ? nomorIndukController.text : member!.nomorInduk,
-          "nama": namaController.text.isNotEmpty ? namaController.text : member!.nama,
-          "alamat": alamatController.text.isNotEmpty ? alamatController.text : member!.alamat,
-          "tgl_lahir": tglLahirController.text.isNotEmpty ? tglLahirController.text : member!.tglLahir,
-          "telepon": teleponController.text.isNotEmpty ? teleponController.text : member!.telepon,
-          "status_aktif": dropDownValue,
-        },
-        options: Options(
-          headers: {'Authorization': 'Bearer ${storage.read('token')}'},
-        ),
-      );
-      print(response.data);
-      if (response.data['success'] == true) {
-        Navigator.pushReplacementNamed(context, '/landingPage');
-        showCustomSnackBar(
-          context,
-          'Member edited succesfully',
-          backgroundColor: Colors.green
-        );
-      }
-    } on DioException catch (error) {
-      print('Error occurred: ${error.response}');
-
-      if (error.response != null && error.response!.data is Map<String, dynamic>) {
-        String errorMessage = error.response!.data['message'];
-        if (error.response!.data['message'] != null && error.response!.data['message'].contains('Invalid datetime format')) {
-          if(error.response!.data['message'].contains('Incorrect integer value')){
-            errorMessage = 'Nomor Induk must be an integer';
-          } else {
-            errorMessage = 'Tanggal lahir must be a date';
-          }
-        }
-        if (error.response!.data['message'] != null && error.response!.data['message'].contains('Integrity constraint violation')) {
-          errorMessage = 'Nomor Induk Already Registered!';
-        }
-        showCustomSnackBar(
-          context,
-          errorMessage,
-          backgroundColor: Colors.red
-        );
-      }
+      Member? member = await memberService.fetchMember(context, id);
+      setState(() {
+        this.member = member;
+      });
+    } catch (error) {
+      print('Error fetching members: $error');
     }
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    DateTime? _selected = await showDatePicker(
-      context: context, 
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100)
-    ); 
-    if(_selected != null ){
-      setState((){
-        tglLahirController.text = _selected.toString().split(" ")[0];
+    DateTime? selectedDate = await selectDate(context);
+    if (selectedDate != null) {
+      setState(() {
+        tglLahirController.text = selectedDate.toString().split(" ")[0];
       });
     }
-  }   
+  }
 
   @override
   void initState() {
@@ -219,7 +134,18 @@ class _EditMemberScreenState extends State{
                       backgroundColor: Colors.blue, 
                       textColor: Colors.white, 
                       onPressed: (){
-                        editMember(context, id);
+                        memberService.editMember(
+                          context, 
+                          id, 
+                          {
+                            "nomor_induk": nomorIndukController.text.isNotEmpty ? nomorIndukController.text : member!.nomorInduk,
+                            "nama": namaController.text.isNotEmpty ? namaController.text : member!.nama,
+                            "alamat": alamatController.text.isNotEmpty ? alamatController.text : member!.alamat,
+                            "tgl_lahir": tglLahirController.text.isNotEmpty ? tglLahirController.text : member!.tglLahir,
+                            "telepon": teleponController.text.isNotEmpty ? teleponController.text : member!.telepon,
+                            "status_aktif": dropDownValue,
+                          },
+                        );
                       }
                     )
                   ],
