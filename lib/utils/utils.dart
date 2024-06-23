@@ -1,5 +1,24 @@
 import 'package:flutter/material.dart';
 
+String getTransactionType(int trxId) {
+  switch (trxId) {
+    case 1:
+      return 'Saldo Awal';
+    case 2:
+      return 'Simpanan';
+    case 3:
+      return 'Penarikan';
+    case 4:
+      return 'Bunga Simpanan';
+    case 5:
+      return 'Koreksi Penambahan';
+    case 6:
+      return 'Koreksi Pengurangan';
+    default:
+      return 'Unknown';
+  }
+}
+
 String mapMemberStatus(int statusId) {
   switch (statusId) {
     case 1:
