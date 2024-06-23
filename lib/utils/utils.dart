@@ -19,3 +19,14 @@ void showCustomSnackBar2(BuildContext context, String message, {Color background
     ),
   );
 }
+
+Future<DateTime?> selectDate(BuildContext context) async {
+  DateTime? selectedDate = await showDatePicker(
+    context: context, 
+    initialDate: DateTime.now(),
+    firstDate: DateTime(1900),
+    lastDate: DateTime(2100)
+  );
+
+  return selectedDate;
+}
