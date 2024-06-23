@@ -322,13 +322,17 @@ class CustomDropdown extends StatelessWidget {
 
 class CustomModalBottomSheet extends StatelessWidget {
   final List<Widget> content;
+  final double? height;
 
-  CustomModalBottomSheet({required this.content});
+  CustomModalBottomSheet({
+    required this.content,
+    this.height
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 400,
+      height: height == null ? 400 : height,
       child: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Column(
