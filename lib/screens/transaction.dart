@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:project_1/components/addTransactionModal.dart';
 import 'package:project_1/components/components.dart';
 import 'package:project_1/data/model/transaction_model.dart';
+import 'package:project_1/data/services/transaction_service.dart';
+import 'package:project_1/utils/utils.dart';
 
 class TransactionScreen extends StatefulWidget {
   final int id;
@@ -15,135 +16,32 @@ class TransactionScreen extends StatefulWidget {
 class _TransactionScreenState extends State<TransactionScreen> {
   final int id;
   _TransactionScreenState({required this.id});
-
-  final apiUrl = 'https://mobileapis.manpits.xyz/api';
-  final dio = Dio();
-  final storage = GetStorage();
+  
+  final TextEditingController trxNominalController = TextEditingController();
+  final TransactionService transactionService = TransactionService();
+  String dropDownValue = '1';
   List<Transaction>? tabungan;
   dynamic saldoData;
 
-  String dropDownValue = '1';
-  var items = {
-    '1': 'Saldo awal',
-    '2': 'Simpanan',
-    '3': 'Penarikan',
-    '5': 'Koreksi Penambahan',
-    '6': 'Koreksi Pengurangan',
-  };
-
-  String getTransactionType(int trxId) {
-    switch (trxId) {
-      case 1:
-        return 'Saldo Awal';
-      case 2:
-        return 'Simpanan';
-      case 3:
-        return 'Penarikan';
-      case 4:
-        return 'Bunga Simpanan';
-      case 5:
-        return 'Koreksi Penambahan';
-      case 6:
-        return 'Koreksi Pengurangan';
-      default:
-        return 'Unknown';
-    }
-  }
-  void addTransaction(BuildContext context) async {
-    try {
-      final response = await dio.post(
-        '$apiUrl/tabungan',
-        data: {
-          "anggota_id": id,
-          "trx_id": dropDownValue,
-          "trx_nominal": trxNominalController.text
-        },
-        options: Options(
-            headers: {'Authorization': 'Bearer ${storage.read('token')}'}
-        ),
-      );
-      if (response.data['success'] == true) {
-        Navigator.pop(context);
-        showCustomSnackBar(
-          context,
-          'Transaction add succesfully',
-          backgroundColor: Colors.green
-        );
-        fetchData(id);
-      } else {
-        String errorMessage = response.data['message'];
-        print(errorMessage);
-        Navigator.pop(context);
-        showCustomSnackBar(
-          context,
-          errorMessage,
-          backgroundColor: Colors.red
-        );
-      }
-    } on DioException catch (error) {
-      String errorMessage = error.response?.data['message'].toString() ?? 'An unexpected error occurred';
-      if (error.response != null && error.response!.data is Map<String, dynamic>) {
-        if (error.response!.data['message'] != null && error.response!.data['message'].contains('trx nominal field is required')) {
-          errorMessage = 'Nominal Field is Required';
-        } else if (error.response!.data['message'].contains('must be a number')) {
-          errorMessage = 'Nominal field must be a number!';
-        }
-      }
-      showCustomSnackBar(
-        context,
-        errorMessage,
-        backgroundColor: Colors.red
-      );
-    }
-  }
-
-  final TextEditingController trxNominalController = TextEditingController();
-
   Future<void> fetchData(int id) async {
     try {
-      Response response = await dio.get(
-        "$apiUrl/tabungan/$id",
-        options: Options(
-          headers: {'Authorization': 'Bearer ${storage.read('token')}'},
-        ),
-      );
-      print(response.data);
-      if (response.data['success'] == true) {
-        TransactionData tabungan = TransactionData.fromJson(response.data);
-        setState(() {
-          this.tabungan = tabungan.data;
-        });
-      }
-      Response response2 = await dio.get(
-        "$apiUrl/saldo/$id",
-        options: Options(
-          headers: {'Authorization': 'Bearer ${storage.read('token')}'},
-        ),
-      );
-      if (response2.data['success'] == true) {
-        setState(() {
-          saldoData = response2.data['data']['saldo'];
-        });
-        print(response2.data);
-      }
-    } on DioException catch (error) {
-      String errorMessage = error.response?.data['message'] ?? 'An unexpected error occurred';
-      if (error.response?.data['message'] != null && error.response!.data['message'].contains('Token is Expired')) {
-        errorMessage = 'Your Session is Over';
-      }
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text(errorMessage),
-          content: Text('Please Login'),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
-                child: Text('Ok')
-            )
-          ],
-        ),
-      );
+      List<Transaction> transactions = await transactionService.fetchData(context, id);
+      dynamic saldo = await transactionService.fetchDataSaldo(context, id);
+      setState(() {
+        tabungan = transactions;
+        saldoData = saldo;
+      });
+    } catch (error) {
+      print('Error fetching transaction: $error');
+    }
+  }
+
+  Future<void> addTransaction(int id) async {
+    try {
+      await transactionService.addTransaction(context, id, dropDownValue, trxNominalController.text);
+      fetchData(id);
+    } catch (error) {
+      print('Error fetching transaction: $error');
     }
   }
 
@@ -151,71 +49,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return CustomModalBottomSheet(
-          content: [  
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Tambah Transaksi',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Nominal',
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            CustomInputField(
-              hintText: 'Masukan Nominal',
-              controller: trxNominalController,
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Jenis Transaksi',
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            CustomDropdown(
-              value: '1',
-              items: items,
-              onChanged: (String? value) {
-                setState(() {
-                  dropDownValue = value!;
-                });
-              },
-            ),
-            SizedBox(height: 20),
-            CustomButton(
-                text: 'Tambah',
-                backgroundColor: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  addTransaction(context);
-                }
-            )
-          ],
+        return AddTransactionModal(
+          id: id,
+          onTransactionAdded: () {
+            fetchData(id);
+          },
         );
       },
     );
