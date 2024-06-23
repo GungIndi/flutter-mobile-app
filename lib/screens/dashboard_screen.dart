@@ -6,23 +6,33 @@ import 'package:project_1/data/model/member_model.dart';
 import 'package:project_1/screens/editMember.dart';
 import 'package:project_1/screens/transaction.dart';
 
-
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key? key}) : super(key: key);
 
-   @override
+  @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State{
+class _DashboardScreenState extends State<DashboardScreen> {
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final dio = Dio();
   final storage = GetStorage();
-  List<Member>? memberList; 
+  List<Member>? memberList;
+
+  String mapMemberStatus(int trxId) {
+    switch (trxId) {
+      case 1:
+        return 'Aktif';
+      case 2:
+        return 'Tidak Aktif';
+      default:
+        return 'Unknown';
+    }
+  }
 
   Future<void> fetchData() async {
     try {
-      Response response = await Dio().get(
+      Response response = await dio.get(
         "$apiUrl/anggota",
         options: Options(
           headers: {'Authorization': 'Bearer ${storage.read('token')}'},
@@ -31,59 +41,74 @@ class _DashboardScreenState extends State{
       print('Response: $response');
       if (response.data['success'] == true) {
         MemberData memberList = MemberData.fromJson(response.data);
+        print('object : ${memberList.data[1]}');
         setState(() {
           this.memberList = memberList.data;
         });
       }
-      
     } on DioException catch (error) {
       print('Error occurred: ${error.response}');
       String errorMessage = error.response!.data['message'];
-      if (error.response!.data['message'] != null && error.response!.data['message'].contains('Token is Expired')) {
-         errorMessage = 'Your Session is Over';
+      if (error.response!.data['message'] != null &&
+          error.response!.data['message'].contains('Token is Expired')) {
+        errorMessage = 'Your Session is Over';
       }
       showDialog<String>(
-        context: context, 
+        context: context,
         builder: (BuildContext context) => AlertDialog(
           title: Text('${errorMessage}'),
           content: Text('Please Login'),
           actions: <Widget>[
             TextButton(
-              onPressed: () =>  Navigator.pushReplacementNamed(context, '/login'),
-              child: Text('Ok')
-            )
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, '/login'),
+                child: Text('Ok'))
           ],
-        )    
+        ),
       );
     }
   }
- 
-  void deleteAnggota(context, id) async {
-  final dio = Dio();
-  final apiUrl = 'https://mobileapis.manpits.xyz/api';
-  final storage = GetStorage();
 
-  try{
-    final response = await dio.delete(
-      "$apiUrl/anggota/$id",
-      options: Options(
-        headers: {'Authorization' : 'Bearer ${storage.read('token')}'}
-      )
-    );
-    setState(() {});
-    print(response.data);
-    if (response.data['success'] == true) {
-      Navigator.pushReplacementNamed(context, '/buttom');
-      showCustomSnackBar(
-        context,
-        'Member succesfully deleted',
-        backgroundColor: Colors.green
+  void deleteAnggota(context, int id) async {
+    final dio = Dio();
+    final apiUrl = 'https://mobileapis.manpits.xyz/api';
+    final storage = GetStorage();
+
+    try {
+      final response = await dio.delete(
+        "$apiUrl/anggota/$id",
+        options: Options(
+          headers: {'Authorization': 'Bearer ${storage.read('token')}'},
+        ),
+      );
+      print(response.data);
+      if (response.data['success'] == true) {
+        setState(() {
+          memberList = memberList?.where((member) => member.id != id).toList();
+        });
+        Navigator.pop(context);
+        showCustomSnackBar(
+          context,
+          'Member successfully deleted',
+          backgroundColor: Colors.green,
+        );
+      }
+    } on DioException catch (error) {
+      print('Error occurred: ${error.response}');
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Failed to delete member'),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Ok')),
+          ],
+        ),
       );
     }
-  } on DioException catch (error) {
-    print('Error occurred: ${error.response}');
   }
-}
 
   @override
   void initState() {
@@ -91,7 +116,7 @@ class _DashboardScreenState extends State{
     fetchData();
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white70,
@@ -134,64 +159,82 @@ class _DashboardScreenState extends State{
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          subtitle: 
-                            Text(
-                              '${memberList![index].telepon}',
-                              style: TextStyle(
-                                color: Colors.grey
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${memberList![index].telepon}',
+                                style: TextStyle(color: Colors.grey),
                               ),
-                            ),
-                          subtitleTextStyle: TextStyle(color: Colors.grey[800]),
+                              SizedBox(height: 5),
+                              Text(
+                                mapMemberStatus(
+                                    memberList![index].statusAktif),
+                                style: TextStyle(
+                                    color: memberList![index].statusAktif == 1
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                              )
+                            ],
+                          ),
+                          subtitleTextStyle:
+                              TextStyle(color: Colors.grey[800]),
                           trailing: Wrap(
                             spacing: 10,
                             children: <Widget>[
                               GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => TransactionScreen(id: memberList![index].id),
-                                    ),
-                                  );
-                                },
-                                child: Icon(Icons.payment_outlined)
-                              ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            TransactionScreen(
+                                                id: memberList![index].id),
+                                      ),
+                                    );
+                                  },
+                                  child: Icon(Icons.payment_outlined)),
                               GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditMemberScreen(id: memberList![index].id),
-                                    ),
-                                  );
-                                },
-                                child: Icon(Icons.edit)
-                              ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditMemberScreen(
+                                                id: memberList![index].id),
+                                      ),
+                                    );
+                                  },
+                                  child: Icon(Icons.edit)),
                               GestureDetector(
-                                onTap: () {
-                                  showDialog<String>(
-                                    context: context,
-                                    builder: (BuildContext context) => AlertDialog(
-                                      title: const Text('Are you sure?'),
-                                      content: const Text('you cannot restore this member'),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context, 'No'),
-                                          child: const Text('No'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => deleteAnggota(context, memberList![index].id),
-                                          child: const Text('Yes'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                child: Icon(Icons.delete)
-                              ),
+                                  onTap: () {
+                                    showDialog<String>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        title: const Text('Are you sure?'),
+                                        content: const Text(
+                                            'You cannot restore this member'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'No'),
+                                            child: const Text('No'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => deleteAnggota(
+                                                context, memberList![index].id),
+                                            child: const Text('Yes'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  child: Icon(Icons.delete)),
                             ],
                           ),
-                          
                         ),
                       ),
                     );
@@ -208,10 +251,7 @@ class _DashboardScreenState extends State{
         padding: const EdgeInsets.fromLTRB(0, 0, 17.0, 17.0),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(
-              context,
-              '/addMember'
-            );
+            Navigator.pushNamed(context, '/addMember');
           },
           child: Icon(Icons.add),
           backgroundColor: Colors.lightBlue,
@@ -227,22 +267,17 @@ void logout(context) async {
   final dio = Dio();
   final apiUrl = 'https://mobileapis.manpits.xyz/api';
   final storage = GetStorage();
-  try{
-    final response = await dio.get(
-      "$apiUrl/logout", 
-      options : Options(
-        headers: {'Authorization' : 'Bearer ${storage.read('token')}'})
-    );
+  try {
+    final response = await dio.get("$apiUrl/logout",
+        options: Options(
+            headers: {'Authorization': 'Bearer ${storage.read('token')}'}));
     print(response.data);
     storage.remove('token');
 
     if (response.data['success'] == true) {
-      Navigator.pushNamed(
-        context,
-        '/login'
-      );
+      Navigator.pushNamed(context, '/login');
     }
-  } on DioException catch (e){
+  } on DioException catch (e) {
     print(e.response);
   }
 }
