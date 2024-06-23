@@ -141,7 +141,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 5.0),
                             child: ListTile(
-                              leading: tabungan![index].id == 3 ? Icon(Icons.money_off_csred) : Icon(Icons.payments_sharp),
+                              leading: tabungan![index].transactionId == 3 ? Icon(Icons.money_off_csred) : Icon(Icons.payment_sharp),
                               title: Text(
                                 getTransactionType(tabungan![index].transactionId),
                                 style: TextStyle(
