@@ -32,7 +32,7 @@ class _InputFieldState extends State<InputField> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        color: inputField,
+        color: Color(0xfff1f1f5),
       ),
       child: TextFormField(
         controller: widget.controller,
