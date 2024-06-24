@@ -95,12 +95,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 style: TextStyle(color: Colors.grey),
                               ),
                               SizedBox(height: 5),
-                              Text(
-                                mapMemberStatus(memberList![index].statusAktif),
-                                style: TextStyle(
-                                  color: memberList![index].statusAktif == 1 ? Colors.green : Colors.red,
-                                  fontWeight: FontWeight.bold
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '●',
+                                    style: TextStyle(
+                                      color:memberList![index].statusAktif == 1 ? Colors.green[300] : Colors.red[300],
+                                    ),
+                                  ),
+                                  Text(
+                                    ' ${mapMemberStatus(memberList![index].statusAktif)}',
+                                    style: TextStyle(
+                                      color: memberList![index].statusAktif == 1 ? Colors.green[300] : Colors.red[300],
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ],
                               )
                             ],
                           ),
@@ -179,7 +189,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           foregroundColor: Colors.white,
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
     );
   }
 }
