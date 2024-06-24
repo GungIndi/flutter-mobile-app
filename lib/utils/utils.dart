@@ -41,11 +41,29 @@ void showCustomSnackBar2(BuildContext context, String message, {Color background
 
 Future<DateTime?> selectDate(BuildContext context) async {
   DateTime? selectedDate = await showDatePicker(
-    context: context, 
+    context: context,
     initialDate: DateTime.now(),
     firstDate: DateTime(1900),
-    lastDate: DateTime(2100)
-  );
+    lastDate: DateTime(2100),
+    builder:(context , child){
+      return Theme(
+        data: Theme.of(context).copyWith(  // override MaterialApp ThemeData
+          colorScheme: ColorScheme.light(
+            primary: Colors.white,  //header and selced day background color
+            onPrimary: Colors.blue, // titles and 
+            onSurface: Colors.black, // Month days , years 
+          ),
+          dialogBackgroundColor:Colors.blue,
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.black, // ok , cancel    buttons
+            ),
+          ),
+        ),
+        child: child!   
+      );
+    }
+    );
 
   return selectedDate;
 }
