@@ -37,7 +37,7 @@ class _AddMemberScreenState extends State{
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add Member',
+          'Tambah Anggota',
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
         ),
         toolbarHeight: 75,
