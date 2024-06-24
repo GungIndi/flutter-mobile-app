@@ -54,7 +54,7 @@ class _InterestScreenState extends State<InterestScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          'Bunga',
+          'Bunga Aktif',
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
         ),
         toolbarHeight: 75,
@@ -77,28 +77,40 @@ class _InterestScreenState extends State<InterestScreen> {
               child: Column(
                 children: [
                   SizedBox(height: 30),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       'Bunga Aktif',
+                  //       style: TextStyle(
+                  //           color: Colors.grey,
+                  //           fontSize: 16
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'Bunga Aktif',
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${activeBunga!['persen']}%',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            '${activeBunga!['persen']}',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          Text(
+                            '%',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold
+                            ),
+                         ),
+                        ],
                       ),
                     ],
                   ),
@@ -127,26 +139,38 @@ class _InterestScreenState extends State<InterestScreen> {
                             padding: const EdgeInsets.only(bottom: 5.0),
                             child: ListTile(
                               leading: Icon(Icons.attach_money),
-                              title: Text(
-                                '${bungas![index]['persen']}%',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              title: Row(
+                                children: [
+                                  Text(
+                                    '${bungas![index]['persen']}',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    '%',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ],
                               ),
                               trailing: bungas![index]['isaktif'] == 0
                                   ? Text(
-                                  'Tidak Aktif',
+                                  '● Tidak Aktif',
                                   style: TextStyle(
-                                      color: Colors.red,
+                                      color: Colors.red[400],
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600
                                   ))
                                   : Text(
-                                  'Aktif',
+                                  '● Aktif',
                                   style: TextStyle(
-                                      color: Colors.green,
+                                      color: Colors.green[400],
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600
                                   )),
@@ -176,7 +200,7 @@ class _InterestScreenState extends State<InterestScreen> {
           backgroundColor: Colors.blue[400],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
     );
   }
 }
