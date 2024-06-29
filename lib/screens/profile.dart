@@ -96,18 +96,17 @@ class _ProfileScreenState extends State{
                     ),
                     DisplayImage(
                       imagePath: "assets/images/profile.jpeg", 
+                      radius: 90,
                       onPressed: () {},
                     ),
                     SizedBox(height: 20),
                     UserProfileData(
                       title: 'Name', 
                       value: user!.name, 
-                      onPressed: (){},
                     ),
                     UserProfileData(
                       title: 'Email', 
                       value: user!.email, 
-                      onPressed: (){},
                     ),
                     SizedBox(height: 70),
                     CustomButton(
