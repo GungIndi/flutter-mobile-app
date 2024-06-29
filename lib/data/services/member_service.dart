@@ -99,11 +99,11 @@ class MemberService {
       );
       print(response.data);
       if (response.data['success'] == true) {
-        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, '/landingPage');
         showCustomSnackBar(
           context,
-          'Member successfully deleted',
-          backgroundColor: Colors.green,
+          'Member deleted succesfully',
+          backgroundColor: Colors.green
         );
       } else {
         String errorMessage = response.data['message'] ?? 'Unknown error occurred';
