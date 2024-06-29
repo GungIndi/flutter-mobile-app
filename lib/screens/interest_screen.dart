@@ -31,7 +31,7 @@ class _InterestScreenState extends State<InterestScreen> {
         bungas = interest['settingbungas'];
       });
     } catch (error) {
-      print('Error: $error');
+      print('Error: $error'); 
     }
   }
 

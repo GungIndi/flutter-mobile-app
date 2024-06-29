@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_1/data/model/member_model.dart';
 import 'package:project_1/data/services/member_service.dart';
 import 'package:project_1/screens/editMember.dart';
+import 'package:project_1/screens/memberProfileScreen.dart';
 import 'package:project_1/screens/transaction.dart';
 import 'package:project_1/utils/utils.dart';
 
@@ -75,96 +76,102 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           width: 1,
                         ),
                       ),
-                      child: Container(
-                        decoration: BoxDecoration(color: Colors.white),
-                        child: ListTile(
-                          minVerticalPadding: 13,
-                          title: Text(
-                            memberList![index].nama,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MemberProfileScreen(id: memberList![index].id),
                             ),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${memberList![index].telepon}',
-                                style: TextStyle(color: Colors.grey),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: ListTile(
+                            minVerticalPadding: 13,
+                            title: Text(
+                              memberList![index].nama,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
                               ),
-                              SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Text(
-                                    '●',
-                                    style: TextStyle(
-                                      color:memberList![index].statusAktif == 1 ? Colors.green[300] : Colors.red[300],
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${memberList![index].telepon}',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '●',
+                                      style: TextStyle(
+                                        color:memberList![index].statusAktif == 1 ? Colors.green[300] : Colors.red[300],
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    ' ${mapMemberStatus(memberList![index].statusAktif)}',
-                                    style: TextStyle(
-                                      color: memberList![index].statusAktif == 1 ? Colors.green[300] : Colors.red[300],
-                                      fontWeight: FontWeight.bold
+                                    Text(
+                                      ' ${mapMemberStatus(memberList![index].statusAktif)}',
+                                      style: TextStyle(
+                                        color: memberList![index].statusAktif == 1 ? Colors.green[300] : Colors.red[300],
+                                        fontWeight: FontWeight.bold
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          subtitleTextStyle: TextStyle(color: Colors.grey[800]),
-                          trailing: Wrap(
-                            spacing: 10,
-                            children: <Widget>[
-                              GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            TransactionScreen(
-                                                id: memberList![index].id),
-                                      ),
-                                    );
-                                  },
-                                  child: Icon(Icons.payment_outlined)),
-                              GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            EditMemberScreen(
-                                                id: memberList![index].id),
-                                      ),
-                                    );
-                                  },
-                                  child: Icon(Icons.edit)),
-                              GestureDetector(
-                                  onTap: () {
-                                    showDialog<String>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                        title: const Text('Are you sure?'),
-                                        content: const Text('You cannot restore this member'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(context, 'No'),
-                                            child: const Text('No'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () => deleteMember(context, memberList![index].id),
-                                            child: const Text('Yes'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  child: Icon(Icons.delete)),
-                            ],
+                                  ],
+                                )
+                              ],
+                            ),
+                            subtitleTextStyle: TextStyle(color: Colors.grey[800]),
+                            trailing: Wrap(
+                              spacing: 10,
+                              children: <Widget>[
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => TransactionScreen(id: memberList![index].id),
+                                        ),
+                                      );
+                                    },
+                                    child: Icon(Icons.payment_outlined)),
+                                GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditMemberScreen(id: memberList![index].id),
+                                        ),
+                                      );
+                                    },
+                                    child: Icon(Icons.edit)),
+                                GestureDetector(
+                                    onTap: () {
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: const Text('Are you sure?'),
+                                          content: const Text('You cannot restore this member'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context, 'No'),
+                                              child: const Text('No'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () => deleteMember(context, memberList![index].id),
+                                              child: const Text('Yes'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    child: Icon(Icons.delete)),
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -23,7 +23,7 @@ List<BottomNavigationBarItem> bottomNavItems = const <BottomNavigationBarItem>[
 List<Widget> bottomNavScreen = <Widget>[
     DashboardScreen(),
     InterestScreen(),
-    ProfileScreen(),
+    ProfileScreen()
 ];
 
 class LandingPage extends StatelessWidget {
