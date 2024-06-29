@@ -43,11 +43,13 @@ class CustomButton extends StatelessWidget {
 class DisplayImage extends StatelessWidget {
   final String imagePath;
   final VoidCallback onPressed;
+  final double radius;
 
   const DisplayImage({
     Key? key,
     required this.imagePath,
     required this.onPressed,
+    required this.radius
   }) : super(key: key);
 
   @override
@@ -57,23 +59,23 @@ class DisplayImage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           CircleAvatar(
-            radius: 100,
+            radius: radius,
             backgroundImage: AssetImage(imagePath),
           ),
-          Container(
-            child: 
-              Container(
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Icon(
-                  Icons.edit,
-                  color: Colors.blue,
-                ),
-              ),
-          )
+          // Container(
+          //   child: 
+          //     Container(
+          //       padding: EdgeInsets.all(4),
+          //       decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         borderRadius: BorderRadius.circular(20),
+          //       ),
+          //       child: Icon(
+          //         Icons.edit,
+          //         color: Colors.blue,
+          //       ),
+          //     ),
+          // )
         ]
       )
     );
@@ -83,19 +85,17 @@ class DisplayImage extends StatelessWidget {
 class UserProfileData extends StatelessWidget {
   final String title;
   final String value;
-  final VoidCallback onPressed;
 
   const UserProfileData({
     Key? key,
     required this.title,
     required this.value,
-    required this.onPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context){
     return Padding(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: EdgeInsets.fromLTRB(15, 0, 15, 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -107,9 +107,6 @@ class UserProfileData extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
-          SizedBox(
-            height: 1,
-          ),
           Container(
             width: 350,
             height: 40,
@@ -120,7 +117,7 @@ class UserProfileData extends StatelessWidget {
                   width: 1,
                 )
               )
-            ),
+            ),  
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -135,14 +132,14 @@ class UserProfileData extends StatelessWidget {
                     ),
                   )
                 ),
-                GestureDetector(
-                  onTap: onPressed,
-                  child: Icon(
-                    Icons.keyboard_arrow_right,
-                    color: Colors.grey,
-                    size: 40.0,
-                  ),
-                )
+                // GestureDetector(
+                //   onTap: onPressed,
+                //   child: Icon(
+                //     Icons.keyboard_arrow_right,
+                //     color: Colors.grey,
+                //     size: 40.0,
+                //   ),
+                // )
               ]
             )
           )
