@@ -62,20 +62,6 @@ class DisplayImage extends StatelessWidget {
             radius: radius,
             backgroundImage: AssetImage(imagePath),
           ),
-          // Container(
-          //   child: 
-          //     Container(
-          //       padding: EdgeInsets.all(4),
-          //       decoration: BoxDecoration(
-          //         color: Colors.white,
-          //         borderRadius: BorderRadius.circular(20),
-          //       ),
-          //       child: Icon(
-          //         Icons.edit,
-          //         color: Colors.blue,
-          //       ),
-          //     ),
-          // )
         ]
       )
     );
@@ -132,14 +118,6 @@ class UserProfileData extends StatelessWidget {
                     ),
                   )
                 ),
-                // GestureDetector(
-                //   onTap: onPressed,
-                //   child: Icon(
-                //     Icons.keyboard_arrow_right,
-                //     color: Colors.grey,
-                //     size: 40.0,
-                //   ),
-                // )
               ]
             )
           )
@@ -238,7 +216,7 @@ class CustomInputField extends StatelessWidget {
 }
 
 class FormatCurrency {
-  static String convertToIdr(dynamic number, int decimalDigit) {
+  static String convertToIdr(int number, int decimalDigit) {
     NumberFormat currencyFormatter = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp ',
