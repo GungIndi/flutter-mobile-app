@@ -43,7 +43,7 @@ class TransactionService {
     } return [];
   }
 
-  Future<dynamic> fetchDataSaldo(BuildContext context, int id) async {
+  Future<int?> fetchDataSaldo(BuildContext context, int id) async {
     try {
       Response response = await dio.get(
         "$apiUrl/saldo/$id",
@@ -52,6 +52,7 @@ class TransactionService {
         ),
       );
       if (response.data['success'] == true) {
+        print(response.data['data']['saldo']);
         return response.data['data']['saldo'];
       } else {
         print('failed to fetch saldo');
@@ -75,6 +76,7 @@ class TransactionService {
         ),
       );
     }
+    return null;
   }
 
   Future<void> addTransaction(BuildContext context, int id, String trxId, String trxNominal) async {

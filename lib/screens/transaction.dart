@@ -21,12 +21,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
   final TransactionService transactionService = TransactionService();
   String dropDownValue = '1';
   List<Transaction>? tabungan;
-  dynamic saldoData;
+  int? saldoData;
 
   Future<void> fetchData(int id) async {
     try {
       List<Transaction> transactions = await transactionService.fetchData(context, id);
-      dynamic saldo = await transactionService.fetchDataSaldo(context, id);
+      int? saldo = await transactionService.fetchDataSaldo(context, id);
       setState(() {
         tabungan = transactions;
         saldoData = saldo;
@@ -108,7 +108,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${FormatCurrency.convertToIdr(saldoData, 2)}',
+                        '${FormatCurrency.convertToIdr(saldoData!, 2)}',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 25,
