@@ -23,6 +23,7 @@ class _AddTransactionModalState extends State<AddTransactionModal> {
     '1': 'Saldo awal',
     '2': 'Simpanan',
     '3': 'Penarikan',
+    // '4': 'Bunga Simpanan',
     '5': 'Koreksi Penambahan',
     '6': 'Koreksi Pengurangan',
   };
