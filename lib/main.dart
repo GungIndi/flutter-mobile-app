@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_1/bloc/bottomBar/bottom_bar_bloc.dart';
+import 'package:project_1/screens/editMember.dart';
 import 'package:project_1/screens/landingPage.dart';
 import 'package:project_1/screens/addMember.dart';
 import 'package:project_1/screens/home_screen.dart';
@@ -41,6 +42,15 @@ class MyApp extends StatelessWidget {
           '/landingPage': (context) => LandingPage(),
           '/addMember': (context) => AddMemberScreen(),
         },
+        // onGenerateRoute: (settings) {
+        //   if (settings.name == '/editMember') {
+        //     final id = settings.arguments as int;
+        //     return MaterialPageRoute(
+        //       builder: (context) => EditMemberScreen(id: id),
+        //     );
+        //   }
+        //   return null;
+        // },
         initialRoute: '/',
       ),
     );
