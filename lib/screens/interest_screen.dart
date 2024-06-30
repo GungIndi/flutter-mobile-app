@@ -38,6 +38,7 @@ class _InterestScreenState extends State<InterestScreen> {
   void _showModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return AddInterestModal(
           onInterestAdded: () {
@@ -77,18 +78,6 @@ class _InterestScreenState extends State<InterestScreen> {
               child: Column(
                 children: [
                   SizedBox(height: 30),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     Text(
-                  //       'Bunga Aktif',
-                  //       style: TextStyle(
-                  //           color: Colors.grey,
-                  //           fontSize: 16
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

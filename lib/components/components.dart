@@ -307,9 +307,14 @@ class CustomModalBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height == null ? 400 : height,
+      height: height ?? 400,
       child: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: EdgeInsets.only(
+          top: 30.0,
+          left: 30.0,
+          right: 30.0,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 30.0,
+        ),
         child: Column(
           children: [
             ...content,
