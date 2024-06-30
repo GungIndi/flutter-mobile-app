@@ -148,21 +148,23 @@ class _InterestScreenState extends State<InterestScreen> {
                                   )
                                 ],
                               ),
-                              trailing: bungas![index]['isaktif'] == 0
-                                  ? Text(
-                                  '● Tidak Aktif',
-                                  style: TextStyle(
-                                      color: Colors.red[400],
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600
-                                  ))
-                                  : Text(
-                                  '● Aktif',
-                                  style: TextStyle(
-                                      color: Colors.green[400],
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600
-                                  )),
+                              trailing: Wrap(
+                                children: [
+                                  Icon(
+                                    Icons.circle,
+                                    color: bungas![index]['isaktif'] == 0 ? Colors.red : Colors.green,
+                                    size: 15,
+                                  ),
+                                  Text(
+                                    ' ${bungas![index]['isaktif'] == 0 ? 'Tidak Aktif' : 'Aktif' }',
+                                    style: TextStyle(
+                                        color: bungas![index]['isaktif'] == 0 ? Colors.red[400] : Colors.green[400],
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600
+                                    )
+                                  ),
+                                ]
+                              )   
                             ),
                           ),
                         ),

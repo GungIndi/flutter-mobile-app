@@ -152,7 +152,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                               ),
                               subtitle: Text('${tabungan![index].date.toString()}',
                                   style: TextStyle(color: Colors.grey[800])),
-                              trailing: tabungan![index].transactionId == 3
+                              trailing: tabungan![index].transactionId == 3 || tabungan![index].transactionId == 6
                                   ? Text(
                                   ' -${FormatCurrency.convertToIdr(tabungan![index].transactionNominal, 0)}',
                                   style: TextStyle(
