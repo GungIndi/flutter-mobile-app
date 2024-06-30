@@ -194,18 +194,46 @@ class _MemberProfileScreenState extends State<MemberProfileScreen> {
                           onPressed: () {
                              showDialog<String>(
                               context: context,
-                              builder: (BuildContext context) =>
-                                  AlertDialog(
-                                title: const Text('Are you sure?'),
-                                content: const Text('You cannot restore this member'),
+                              builder: (BuildContext context) => 
+                              AlertDialog(
+                                alignment: Alignment.center,
+                                title: Center(
+                                  child: const Text(
+                                    'Are you sure?',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                ),
+                                content: const Text(
+                                  'You cannot restore this member',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                backgroundColor: Colors.white,
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () => Navigator.pop(context, 'No'),
-                                    child: const Text('No'),
+                                    child: const Text(
+                                      'No',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    ),
                                   ),
                                   TextButton(
                                     onPressed: () => deleteMember(context, id),
-                                    child: const Text('Yes'),
+                                    child: const Text(
+                                      'Yes',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),

@@ -36,12 +36,18 @@ class InterestService {
       showDialog<String>(
         context: context, 
         builder: (BuildContext context) => AlertDialog(
-          title: Text('${errorMessage}'),
-          content: Text('Please Login'),
+          title: Text(
+            '${errorMessage}',
+            style: TextStyle(color: Colors.black,fontSize: 22,fontWeight: FontWeight.bold),
+          ),
+          content: Text('Please Login', style: TextStyle(color: Colors.grey, fontSize: 18)),
           actions: <Widget>[
             TextButton(
               onPressed: () =>  Navigator.pushReplacementNamed(context, '/login'),
-              child: Text('Ok')
+              child: Text(
+                'Ok',
+                style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+              )
             )
           ],
         )    
