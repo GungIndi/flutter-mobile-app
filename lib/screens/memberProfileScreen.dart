@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_1/components/components.dart';
 import 'package:project_1/data/model/member_model.dart';
 import 'package:project_1/data/services/member_service.dart';
+import 'package:project_1/data/services/transaction_service.dart';
 import 'package:project_1/screens/editMember.dart';
 import 'package:project_1/screens/transaction.dart';
 
@@ -17,9 +18,12 @@ class MemberProfileScreen extends StatefulWidget {
 class _MemberProfileScreenState extends State<MemberProfileScreen> {
   final int id;
   _MemberProfileScreenState({required this.id});
-  Member? member;
+
   final MemberService memberService = MemberService();
-  
+  final TransactionService transactionService = TransactionService();
+  Member? member;
+  int? saldoData;
+
   Future<void> fetchData(id) async{
     try{
       Member? member = await memberService.fetchMember(context, id);
@@ -34,11 +38,19 @@ class _MemberProfileScreenState extends State<MemberProfileScreen> {
   void deleteMember(BuildContext context, int id) async {
     try {
       await memberService.deleteMember(context, id);
-      // setState(() {
-      //   memberList = memberList?.where((member) => member.id != id).toList();
-      // });
     } catch (error) {
       print('Error deleting member: $error');
+    }
+  }
+  
+  Future<void> fetchDataSaldo(id) async {
+    try {
+      int? saldoData = await transactionService.fetchDataSaldo(context, id);
+      setState(() {
+        this.saldoData = saldoData;
+      });
+    } catch (error) {
+      print(error);
     }
   }
 
@@ -46,6 +58,7 @@ class _MemberProfileScreenState extends State<MemberProfileScreen> {
   void initState(){
     super.initState();
     fetchData(id);
+    fetchDataSaldo(id);
   }
 
   @override
@@ -65,7 +78,7 @@ class _MemberProfileScreenState extends State<MemberProfileScreen> {
       surfaceTintColor: Colors.transparent,
       ),
       body: SafeArea(
-        child: member == null
+        child: member == null || saldoData == null
         ? Center(
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.blue)
@@ -99,7 +112,7 @@ class _MemberProfileScreenState extends State<MemberProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Rp 200.000',
+                              FormatCurrency.convertToIdr(saldoData!, 2),
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 18,
