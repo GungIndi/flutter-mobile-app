@@ -19,7 +19,7 @@ class _AddInterestModalState extends State<AddInterestModal> {
 
   Future<void> addInterest() async {
     try {
-      await interestService.addInterest(context, double.parse(persenController.text));
+      await interestService.addInterest(context, persenController.text);
       widget.onInterestAdded();
     } catch (error) {
       print('Error fetching transaction: $error');
