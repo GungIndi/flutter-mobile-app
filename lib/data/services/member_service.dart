@@ -220,10 +220,8 @@ class MemberService {
 
       if (error.response != null && error.response!.data is Map<String, dynamic>) {
         String errorMessage = error.response!.data['message'];
-        if (error.response!.data['message'] != null && error.response!.data['message'].contains('Invalid datetime format')) {
-          if(error.response!.data['message'].contains('Incorrect integer value')){
-            errorMessage = 'Nomor Induk must be an integer';
-          }
+        if(error.response!.data['message'].contains('Incorrect integer value') || error.response!.data['message'].contains('SQLSTATE[01000]')){
+          errorMessage = 'Nomor Induk must be an integer';
         }
         if (error.response!.data['message'] != null && error.response!.data['message'].contains('Integrity constraint violation')) {
           if(error.response!.data['message'].contains('Duplicate entry')){
@@ -270,12 +268,8 @@ class MemberService {
 
       if (error.response != null && error.response!.data is Map<String, dynamic>) {
         String errorMessage = error.response!.data['message'] ?? 'An unexpected error occurred';
-        if (errorMessage.contains('Invalid datetime format')) {
-          if (errorMessage.contains('Incorrect integer value')) {
-            errorMessage = 'Nomor Induk must be an integer';
-          } else {
-            errorMessage = 'Tanggal lahir must be a date';
-          }
+        if (errorMessage.contains('Incorrect integer value') || error.response!.data['message'].contains('SQLSTATE[01000]')) {
+          errorMessage = 'Nomor Induk must be an integer';
         }
         if (errorMessage.contains('Integrity constraint violation')) {
           errorMessage = 'Nomor Induk Already Registered!';
