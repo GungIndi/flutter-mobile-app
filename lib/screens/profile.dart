@@ -114,7 +114,52 @@ class _ProfileScreenState extends State{
                       backgroundColor: Colors.red, 
                       textColor: Colors.white, 
                       onPressed: () {
-                        logout(context);
+                        showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => 
+                        AlertDialog(
+                          alignment: Alignment.center,
+                          title: Center(
+                            child: const Text(
+                              'Konfirmasi Logout',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                          content: const Text(
+                            'Apakah Anda ingin melanjutkan?',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          backgroundColor: Colors.white,
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'No'),
+                              child: const Text(
+                                'No',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => logout(context),
+                              child: const Text(
+                                'Yes',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        );
                       },
                     ),
                   ],
