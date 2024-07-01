@@ -56,7 +56,7 @@ class InterestService {
     }
   }
 
-  Future<void> addInterest(BuildContext context, double persen) async {
+  Future<void> addInterest(BuildContext context, dynamic persen) async {
     try {
       final response = await dio.post(
         '$apiUrl/addsettingbunga',
