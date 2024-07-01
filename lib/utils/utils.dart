@@ -24,7 +24,18 @@ String mapMemberStatus(int statusId) {
     case 1:
       return 'Aktif';
     case 2:
-      return 'Tidak Aktif';
+      return 'Non Aktif';
+    default:
+      return 'Unknown';
+  }
+}
+
+String mapInterestStatus(int statusId) {
+  switch (statusId) {
+    case 0:
+      return 'Non Aktif';
+    case 1:
+      return 'Aktif';
     default:
       return 'Unknown';
   }
