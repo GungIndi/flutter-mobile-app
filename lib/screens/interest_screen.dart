@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/components/addInterestModal.dart';
 import 'package:project_1/data/services/interest_service.dart';
+import 'package:project_1/utils/utils.dart';
 
 class InterestScreen extends StatefulWidget {
   const InterestScreen({ Key? key }) : super(key: key);
@@ -29,6 +30,7 @@ class _InterestScreenState extends State<InterestScreen> {
         interestData = interest;
         activeBunga = interest['activebunga'];
         bungas = interest['settingbungas'];
+        bungas!.sort(((a, b) => b['id'].compareTo(a['id'])));
       });
     } catch (error) {
       print('Error: $error'); 
@@ -66,14 +68,14 @@ class _InterestScreenState extends State<InterestScreen> {
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
-        child: interestData == null
-            ? Center(
+        child: interestData == null 
+        ? Center(
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
           ),
         )
-            : SingleChildScrollView(
-          child: Padding(
+        : SingleChildScrollView(
+          child: bungas!.length != 0 ? Padding(
               padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
               child: Column(
                 children: [
@@ -84,7 +86,7 @@ class _InterestScreenState extends State<InterestScreen> {
                       Row(
                         children: [
                           Text(
-                            '${activeBunga!['persen']}',
+                            activeBunga != null ? '${activeBunga!['persen']}' : '0',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 40,
@@ -156,7 +158,7 @@ class _InterestScreenState extends State<InterestScreen> {
                                     size: 15,
                                   ),
                                   Text(
-                                    ' ${bungas![index]['isaktif'] == 0 ? 'Tidak Aktif' : 'Aktif' }',
+                                    ' ${mapInterestStatus(bungas![index]['isaktif'])}',
                                     style: TextStyle(
                                         color: bungas![index]['isaktif'] == 0 ? Colors.red[400] : Colors.green[400],
                                         fontSize: 13,
@@ -173,6 +175,38 @@ class _InterestScreenState extends State<InterestScreen> {
                   ),
                 ],
               )
+          )
+          : Container(
+            width: 400,
+            height: 600,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12)
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Icon(Icons.search, size: 300, color: Colors.blue[300])
+                ),
+                Text(
+                  'Tidak ada bunga',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Silahkan tambah bunga baru.',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),

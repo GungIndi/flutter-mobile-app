@@ -3,6 +3,7 @@ import 'package:project_1/components/addTransactionModal.dart';
 import 'package:project_1/components/components.dart';
 import 'package:project_1/data/model/transaction_model.dart';
 import 'package:project_1/data/services/transaction_service.dart';
+import 'package:project_1/screens/memberProfileScreen.dart';
 import 'package:project_1/utils/utils.dart';
 
 class TransactionScreen extends StatefulWidget {
@@ -40,6 +41,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
     try {
       await transactionService.addTransaction(context, id, dropDownValue, trxNominalController.text);
       fetchData(id);
+      
     } catch (error) {
       print('Error fetching transaction: $error');
     }
@@ -79,6 +81,17 @@ class _TransactionScreenState extends State<TransactionScreen> {
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+           Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemberProfileScreen(id: id),
+              ),
+            );
+          },
+        ),
       ),
       body: SafeArea(
         child: tabungan == null || saldoData == null
@@ -90,7 +103,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
             : SingleChildScrollView(
           child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 5, 20, 20),
-              child: Column(
+              child: tabungan!.length != 0 ? Column(
                 children: [
                   SizedBox(height: 30),
                   Row(
@@ -150,8 +163,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              subtitle: Text('${tabungan![index].date.toString()}',
-                                  style: TextStyle(color: Colors.grey[800])),
+                              subtitle: Text(
+                                '${tabungan![index].date.toString()}',
+                                style: TextStyle(
+                                  color: Colors.grey[800]
+                                  )
+                                ),
                               trailing: tabungan![index].transactionId == 3 || tabungan![index].transactionId == 6
                                   ? Text(
                                   ' -${FormatCurrency.convertToIdr(tabungan![index].transactionNominal, 0)}',
@@ -174,8 +191,40 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     },
                   ),
                 ],
-              )
-          ),
+              ) 
+              : Container(
+                  width: 400,
+                  height: 600,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12)
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Icon(Icons.search, size: 300, color: Colors.blue[300])
+                      ),
+                      Text(
+                        'Tidak ada transaksi',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Silahkan tambah transaksi baru.',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                )
+          ), 
         ),
       ),
       floatingActionButton: Padding(

@@ -64,8 +64,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
-          child: memberList != null
-              ? ListView.builder(
+          child: memberList == null ? 
+              Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
+              )
+              : memberList!.length != 0 ? ListView.builder(
                   itemCount: memberList!.length,
                   itemBuilder: (context, index) {
                     return Card(
@@ -129,11 +134,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   },
                 )
-              : Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                : Container(
+                  width: 400,
+                  height: 600,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12)
                   ),
-                ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Icon(Icons.search, size: 300, color: Colors.blue[300])
+                      ),
+                      Text(
+                        'Tidak ada anggota',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Silahkan tambah anggota baru.',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                )
         ),
       ),
       floatingActionButton: Padding(
