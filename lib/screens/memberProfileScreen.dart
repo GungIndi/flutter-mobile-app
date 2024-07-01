@@ -5,6 +5,7 @@ import 'package:project_1/data/services/member_service.dart';
 import 'package:project_1/data/services/transaction_service.dart';
 import 'package:project_1/screens/editMember.dart';
 import 'package:project_1/screens/transaction.dart';
+import 'package:project_1/utils/utils.dart';
 
 
 class MemberProfileScreen extends StatefulWidget {
@@ -74,8 +75,12 @@ class _MemberProfileScreenState extends State<MemberProfileScreen> {
       ),
       centerTitle: true,
       toolbarHeight: 75,
-      backgroundColor: Colors.transparent,
-      surfaceTintColor: Colors.transparent,
+      leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+           Navigator.pushReplacementNamed(context, '/landingPage');
+          },
+        ),
       ),
       body: SafeArea(
         child: member == null || saldoData == null
@@ -126,7 +131,7 @@ class _MemberProfileScreenState extends State<MemberProfileScreen> {
                             ),
                             SizedBox(width: 5),
                             Text(
-                              member!.statusAktif == 2 ? 'Tidak Aktif' : 'Aktif', 
+                              mapMemberStatus(member!.statusAktif), 
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: member!.statusAktif == 2 ? Colors.red : Colors.green,
