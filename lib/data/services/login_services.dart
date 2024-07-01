@@ -43,18 +43,10 @@ class LoginService {
         }
       }
       print(error.response!.data);
-      showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('An Error Occurred!'),
-          content: Text('$errorMessage'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'No'),
-              child: Text('Ok')
-            )
-          ],
-        )
+      showCustomSnackBar(
+        context,
+        errorMessage,
+        backgroundColor: Colors.red
       );
     }
   }
