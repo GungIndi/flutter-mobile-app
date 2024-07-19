@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_1/components/addTransactionModal.dart';
 import 'package:project_1/components/components.dart';
+import 'package:project_1/data/model/member_model.dart';
 import 'package:project_1/data/model/transaction_model.dart';
+import 'package:project_1/data/services/member_service.dart';
 import 'package:project_1/data/services/transaction_service.dart';
 import 'package:project_1/screens/memberProfileScreen.dart';
 import 'package:project_1/utils/utils.dart';
@@ -20,22 +22,39 @@ class _TransactionScreenState extends State<TransactionScreen> {
   
   final TextEditingController trxNominalController = TextEditingController();
   final TransactionService transactionService = TransactionService();
+
+  final MemberService memberService = MemberService(); 
+
   String dropDownValue = '1';
   List<Transaction>? tabungan;
   int? saldoData;
+  Member? member;
 
   Future<void> fetchData(int id) async {
     try {
       List<Transaction> transactions = await transactionService.fetchData(context, id);
       int? saldo = await transactionService.fetchDataSaldo(context, id);
+      Member? member = await memberService.fetchMember(context, id);
       setState(() {
         tabungan = transactions;
         saldoData = saldo;
+        this.member = member;
       });
     } catch (error) {
       print('Error fetching transaction: $error');
     }
   }
+
+  // Future<void> fetchDataMember(id) async {
+  //   try {
+  //     Member? member = await memberService.fetchMember(context, id);
+  //     setState(() {
+  //       this.member = member;
+  //     });
+  //   } catch (error) {
+  //     print('Error fetching members: $error');
+  //   }
+  // }
 
   Future<void> addTransaction(int id) async {
     try {
@@ -73,7 +92,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          'Tabungan',
+          member == null ? 'Tabungan' : 'Tabungan ${member!.nama}',
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
         ),
         toolbarHeight: 75,
@@ -94,7 +113,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
         ),
       ),
       body: SafeArea(
-        child: tabungan == null || saldoData == null
+        child: tabungan == null || saldoData == null || member == null
             ? Center(
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
