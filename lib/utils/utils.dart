@@ -19,7 +19,7 @@ String getTransactionType(int trxId) {
   }
 }
 
-String mapMemberStatus(int statusId) {
+String mapMemberStatus(int statusId) { 
   switch (statusId) {
     case 1:
       return 'Aktif';
@@ -55,7 +55,7 @@ Future<DateTime?> selectDate(BuildContext context) async {
     context: context,
     initialDate: DateTime.now(),
     firstDate: DateTime(1900),
-    lastDate: DateTime(2100),
+    lastDate: DateTime.now(),
     builder:(context , child){
       return Theme(
         data: Theme.of(context).copyWith(  // override MaterialApp ThemeData
