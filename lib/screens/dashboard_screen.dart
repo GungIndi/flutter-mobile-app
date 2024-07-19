@@ -117,7 +117,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 Icon(
                                   Icons.circle,
                                   color: memberList![index].statusAktif == 1 ? Colors.green : Colors.red,
-                                  size: 15,
+                                  size: 20,
                                 ),
                                 Text(
                                   ' ${mapMemberStatus(memberList![index].statusAktif)}',
